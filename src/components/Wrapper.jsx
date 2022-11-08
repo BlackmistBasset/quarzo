@@ -11,6 +11,7 @@ import {
     FormLabel,
     Input,
     Button,
+    ButtonGroup,
     Stack,
     InputGroup,
     FormErrorMessage,
@@ -40,10 +41,42 @@ const navigate = useNavigate();
                 <Button m={3} border="1px" borderColor="gray.500" _hover={{ bg: "blackAlpha.400" }}>Listado de obras</Button>
             </Flex>
             <Center backgroundColor = "gray.100"  border="1px" p={5}> 
-                <Button w={400} h={100} fontSize="25px" border="1px" borderColor="gray.500" m={5} _hover={{ bg: "blackAlpha.400" }}>Compras</Button> 
-                <Button w={400} h={100} fontSize="25px" border="1px" borderColor="gray.500" m={5} _hover={{ bg: "blackAlpha.400" }}>Contratistas y Servicios</Button>
-                <Button w={400} h={100} fontSize="25px" border="1px" borderColor="gray.500" m={5} _hover={{ bg: "blackAlpha.400" }}>Presupuestos</Button>
-                <Button w={400} h={100} fontSize="25px" border="1px" borderColor="gray.500" m={5} _hover={{ bg: "blackAlpha.400" }}>Inventario</Button>
+                <Button 
+                    w={400} 
+                    h={100} 
+                    fontSize="25px" 
+                    border="1px" 
+                    borderColor="gray.500" 
+                    m={5} 
+                    _hover={{ bg: "blackAlpha.400" }} 
+                    onClick={() => navigate("/compras")}>Compras</Button> 
+                <Button 
+                    w={400}
+                    h={100} 
+                    fontSize="25px" 
+                    border="1px" 
+                    borderColor="gray.500" 
+                    m={5} 
+                    _hover={{ bg: "blackAlpha.400" }} 
+                    onClick={() => navigate("/contratistas")}>Contratistas y Servicios</Button>
+                <Button 
+                    w={400} 
+                    h={100} 
+                    fontSize="25px" 
+                    border="1px" 
+                    borderColor="gray.500" 
+                    m={5} 
+                    _hover={{ bg: "blackAlpha.400" }} 
+                    onClick={() => navigate("/presupuestos")}>Presupuestos</Button>
+                <Button 
+                    w={400} 
+                    h={100} 
+                    fontSize="25px" 
+                    border="1px" 
+                    borderColor="gray.500" 
+                    m={5} 
+                    _hover={{ bg: "blackAlpha.400" }} 
+                    onClick={() => navigate("/inventario")}>Inventario</Button>
             </Center>
         </Box>
     </>
