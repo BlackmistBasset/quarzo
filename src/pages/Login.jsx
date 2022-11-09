@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
-import { BiShow, BiHide } from "react-icons/bi";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, getUserInfo } from "../firebase/firebase";
+
+import { BiShow, BiHide } from "react-icons/bi";
 import {
   Center,
   Text,
@@ -33,8 +37,16 @@ export const Login = () => {
 
   const [show, setShow] = useState(false);
   const checkPassword = () => setShow(!show);
-  const handleLogin = () => {
-    console.log("login!");
+  const handleLogin = (data) => {
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        navigate("/compras");
+        return getUserInfo(userCredential.user.uid);
+      })
+      .catch((err) => {
+        const errorMessage = err.message;
+        console.log(errorMessage);
+      });
   };
 
   const {
@@ -44,6 +56,7 @@ export const Login = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   return (
     <Center w="100vw" h="100vh" backgroundColor="gray.100">
       <Flex align="center" justify="center" flexDirection="column">

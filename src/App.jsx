@@ -8,7 +8,8 @@ import { Compras } from "./pages/Compras";
 export const App = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Compras />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/compras" element={<Compras />} />
     </Routes>

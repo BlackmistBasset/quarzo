@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, registerNewUser } from "../firebase/firebase";
+
 import { BiShow, BiHide } from "react-icons/bi";
 import {
   Center,
@@ -50,7 +55,22 @@ export const Register = () => {
   const navigate = useNavigate();
 
   const handleRegister = (data) => {
-    console.log(data);
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        const user = {
+          uid: userCredential.user.uid,
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          userType: data.userType,
+        };
+        registerNewUser(user);
+        navigate("/compras");
+      })
+      .catch((err) => {
+        const errorMessage = err.message;
+        console.log(errorMessage);
+      });
   };
   return (
     <Center w="100vw" h="100vh" backgroundColor="gray.100">

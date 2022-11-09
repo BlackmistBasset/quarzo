@@ -1,23 +1,28 @@
-import React from 'react'
+import React from "react";
 
-import { Wrapper } from '../components/Wrapper'
+import { Wrapper } from "../components/Wrapper";
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
   TableContainer,
-} from '@chakra-ui/react'
+} from "@chakra-ui/react";
 export const Compras = () => {
   return (
     <>
-    <Wrapper />
-      <TableContainer border="1px" backgroundColor = "gray.100" p={1} m={5} whiteSpace="wrap">   
-        <Table variant='simple' colorScheme='gray.500'>
+      <Wrapper />
+      <TableContainer
+        border="1px"
+        backgroundColor="gray.100"
+        p={1}
+        m={5}
+        whiteSpace="wrap"
+      >
+        <Table variant="simple" colorScheme="gray.500">
           <TableCaption>Compras</TableCaption>
           <Thead>
             <Tr>
@@ -44,5 +49,5 @@ export const Compras = () => {
         </Table>
       </TableContainer>
     </>
-  )
-}
+  );
+};
