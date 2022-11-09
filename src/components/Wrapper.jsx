@@ -81,6 +81,27 @@ export const Wrapper = () => {
             Listado de obras
           </Button>
         </Flex>
+      </Box>
+      <Box m={5}>
+        <Flex border="1px" backgroundColor="gray.100" p={1}>
+          <Text p={5}>OBRA: @Nombre de la obra</Text>
+          <Button
+            m={3}
+            border="1px"
+            borderColor="gray.500"
+            _hover={{ bg: "blackAlpha.400" }}
+          >
+            CAMBIAR
+          </Button>
+          <Button
+            m={3}
+            border="1px"
+            borderColor="gray.500"
+            _hover={{ bg: "blackAlpha.400" }}
+          >
+            Listado de obras
+          </Button>
+        </Flex>
         <Center backgroundColor="gray.100" border="1px" p={5}>
           <Button
             w={400}
@@ -90,6 +111,7 @@ export const Wrapper = () => {
             borderColor="gray.500"
             m={5}
             _hover={{ bg: "blackAlpha.400" }}
+            onClick={() => navigate("/compras")}
           >
             Compras
           </Button>
@@ -101,6 +123,7 @@ export const Wrapper = () => {
             borderColor="gray.500"
             m={5}
             _hover={{ bg: "blackAlpha.400" }}
+            onClick={() => navigate("/contratistas")}
           >
             Contratistas y Servicios
           </Button>
@@ -112,6 +135,7 @@ export const Wrapper = () => {
             borderColor="gray.500"
             m={5}
             _hover={{ bg: "blackAlpha.400" }}
+            onClick={() => navigate("/presupuestos")}
           >
             Presupuestos
           </Button>
@@ -123,6 +147,7 @@ export const Wrapper = () => {
             borderColor="gray.500"
             m={5}
             _hover={{ bg: "blackAlpha.400" }}
+            onClick={() => navigate("/inventario")}
           >
             Inventario
           </Button>
