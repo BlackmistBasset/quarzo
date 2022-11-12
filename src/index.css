@@ -3,8 +3,3 @@
   padding: 0px;
   box-sizing: border-box;
 }
-
-input:-internal-autofill-selected {
-  background-color: white !important;
-  color: white !important;
-}

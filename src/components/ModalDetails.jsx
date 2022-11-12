@@ -11,26 +11,34 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-export const ModalDetails = () => {
+export const ModalDetails = ({
+  fechaSolicitado,
+  nombreItem,
+  um,
+  cantidad,
+  fechaRequerido,
+  estadoPedido,
+  recibido,
+}) => {
   return (
     <>
-      <ModalHeader>Nombre del Item</ModalHeader>
+      <ModalHeader>{nombreItem}</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
         <h2>Detalle</h2>
         <Container border="1px">Aca van los detalles del item.</Container>
         <Flex>
           <Box>
-            <h2>Unidad de medida: Kilo</h2>
-            <h2>Fecha solicitado: 07/11/2022</h2>
+            <h2>Unidad de medida: {um}</h2>
+            <h2>Fecha solicitado: {fechaSolicitado}</h2>
 
-            <h2>ESTADO DEL PEDIDO: COMPRADO</h2>
+            <h2>ESTADO DEL PEDIDO: {estadoPedido}</h2>
             <h2>ESTADO DE LA ENTREGA: Entrega el proveedor 13/11/2022</h2>
-            <h2>RECIBIDO EN OBRA: OK</h2>
+            <h2>RECIBIDO EN OBRA: {recibido}</h2>
           </Box>
           <Box>
-            <h2>Cantidad: 250</h2>
-            <h2>Fecha requerido: 15/11/2022</h2>
+            <h2>Cantidad: {cantidad}</h2>
+            <h2>Fecha requerido: {fechaRequerido}</h2>
           </Box>
         </Flex>
 
