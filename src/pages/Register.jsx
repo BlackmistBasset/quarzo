@@ -123,6 +123,7 @@ export const Register = () => {
                 <option value="compras">Compras</option>
                 <option value="jefeDeObra">Jefe de obra</option>
                 <option value="coordinador">Coordinador</option>
+                <option value="admin">Administrador</option>
               </Select>
               <FormErrorMessage>{errors.userType?.message}</FormErrorMessage>
             </FormControl>

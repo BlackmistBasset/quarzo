@@ -5,7 +5,7 @@ import { TableRow } from "../components/TableRow";
 
 import { Box, Button, useDisclosure, HStack } from "@chakra-ui/react";
 export const Compras = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { onOpen } = useDisclosure();
   return (
     <>
       <Wrapper />
@@ -110,7 +110,7 @@ export const Compras = () => {
         <Box height="75%" overflowY="scroll">
           <TableRow
             fechaSolicitado="15/11/22"
-            nombreItem="jerbito"
+            nombreItem="Jerbito"
             um="unidad"
             cantidad="1000"
             fechaRequerido="20/11/22"
