@@ -12,7 +12,7 @@ export const TableRow = ({
   recibido,
 }) => {
   return (
-    <HStack ml={5} px={1} border="1px">
+    <HStack mx={5} px={1} border="1px">
       <Box
         fontWeight="bold"
         fontSize="12px"

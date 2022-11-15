@@ -7,9 +7,8 @@ import { auth } from "../firebase/firebase";
 import { BiExit } from "react-icons/bi";
 import { Center, Box, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 
-export const Wrapper = () => {
+export const Wrapper = ({ userInfo }) => {
   const navigate = useNavigate();
-
   const handleLogOut = () => {
     signOut(auth)
       .then(() => {
@@ -30,7 +29,7 @@ export const Wrapper = () => {
         height="7vh"
       >
         <Text p={2} ml="20px">
-          @usuario
+          {userInfo && userInfo.firstName}
         </Text>
         <Text p={2} color="red" ml="20px">
           Caja: $10000
