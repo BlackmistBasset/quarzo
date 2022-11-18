@@ -11,7 +11,6 @@ export const UserProvider = ({
   useEffect(() => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        console.log("me ejecuto");
         const userInfo = await getUserInfo(user.uid);
         onUserLoggedIn(userInfo);
       } else {

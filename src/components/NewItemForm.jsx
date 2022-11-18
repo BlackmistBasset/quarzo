@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 
+import { v4 as uuidv4 } from "uuid";
+
 import {
   Flex,
   FormControl,
@@ -17,6 +19,7 @@ import {
   useDisclosure,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { addNewItem } from "../firebase/firebase";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -31,11 +34,18 @@ const schema = Yup.object({
 export const NewItemForm = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const itemUpload = (item) => {
+  const itemUpload = async (item) => {
     if (item) {
+      let parsedItem = { ...item };
+      parsedItem.fechaRequerido =
+        parsedItem.fechaRequerido.toLocaleDateString();
+      parsedItem.fechaSolicitado =
+        parsedItem.fechaSolicitado.toLocaleDateString();
+      parsedItem.id = uuidv4();
+      console.log(parsedItem);
+      await addNewItem(parsedItem);
       onClose();
     }
-    console.log(item);
   };
 
   const {

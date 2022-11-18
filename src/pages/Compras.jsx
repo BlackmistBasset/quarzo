@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Wrapper } from "../components/Wrapper";
 import { TableRow } from "../components/TableRow";
@@ -12,25 +12,43 @@ import {
   HStack,
   Center,
   Spinner,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { getItems, listenItems } from "../firebase/firebase";
 
 export const Compras = () => {
   const [state, setState] = useState(0);
+  const [items, setItems] = useState();
+  const [hasItems, setHasItems] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
   const { onOpen } = useDisclosure();
 
+  useEffect(() => {
+    const loadItems = async () => {
+      await getItems().then((items) => {
+        if (items.length > 0) {
+          setHasItems(true);
+          setItems(items);
+          listenItems((items) => {
+            setItems(items);
+          });
+        }
+      });
+    };
+    loadItems();
+  }, [state]);
   const handleUserLoggedIn = async (user) => {
     setUserInfo(user);
     setState(2);
   };
+
   const handleUserNotLoggedIn = () => navigate("/login");
 
   if (state === 2) {
     return (
-      <>
-        <Wrapper userInfo={userInfo} />
+      <Wrapper userInfo={userInfo}>
         <Box margin="auto" height="70vh">
           <HStack backgroundColor="gray.100" mx={5} p={1} border="1px">
             <Box
@@ -81,7 +99,18 @@ export const Compras = () => {
               fontWeight="bold"
               fontSize="12px"
               color="gray.600"
-              w="15%"
+              w="10%"
+              borderRight="1px"
+              paddingLeft="7px"
+              py={1}
+            >
+              TOMA PEDIDO
+            </Box>
+            <Box
+              fontWeight="bold"
+              fontSize="12px"
+              color="gray.600"
+              w="10%"
               paddingLeft="7px"
               borderRight="1px"
               py={1}
@@ -92,7 +121,7 @@ export const Compras = () => {
               fontWeight="bold"
               fontSize="12px"
               color="gray.600"
-              w="20%"
+              w="15%"
               borderRight="1px"
               paddingLeft="7px"
               py={1}
@@ -122,7 +151,27 @@ export const Compras = () => {
             </Box>
           </HStack>
           <Box height="75%" overflowY="scroll">
-            <TableRow
+            {hasItems ? (
+              ""
+            ) : (
+              <Center width="100%">
+                <Text p={3}>Aún no hay ítems cargados</Text>
+              </Center>
+            )}
+            {items &&
+              items.map((item) => (
+                <TableRow
+                  key={item.id}
+                  fechaSolicitado={item.fechaSolicitado}
+                  nombreItem={item.nombreItem}
+                  um={item.um}
+                  cantidad={item.cantidad}
+                  fechaRequerido={item.fechaRequerido}
+                  estadoPedido={item.estadoPedido}
+                  recibido={item.recibido}
+                />
+              ))}
+            {/* <TableRow
               fechaSolicitado="15/11/22"
               nombreItem="Jerbito"
               um="unidad"
@@ -256,7 +305,7 @@ export const Compras = () => {
               fechaRequerido="20/11/22"
               estadoPedido="Pendiente"
               recibido="Sí"
-            />
+            /> */}
           </Box>
           <HStack
             backgroundColor="gray.100"
@@ -279,7 +328,7 @@ export const Compras = () => {
             <NewItemForm />
           </HStack>
         </Box>
-      </>
+      </Wrapper>
     );
   } else {
     return (
@@ -287,9 +336,11 @@ export const Compras = () => {
         onUserLoggedIn={handleUserLoggedIn}
         onUserNotLoggedIn={handleUserNotLoggedIn}
       >
-        <Center width="100%" height="100vh">
-          <Spinner />
-        </Center>
+        <Wrapper userInfo={userInfo}>
+          <Center width="100%" height="70vh">
+            <Spinner />
+          </Center>
+        </Wrapper>
       </UserProvider>
     );
   }

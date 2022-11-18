@@ -1,27 +1,19 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-//import { getStorage } from "firebase/storage";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
 import {
-  getFirestore,
   collection,
   doc,
   setDoc,
   getDoc,
+  addDoc,
+  getDocs,
+  getFirestore,
+  onSnapshot,
 } from "firebase/firestore";
 
 // import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-// import {
-//   getFirestore,
-//   collection,
-//   addDoc,
-//   getDocs,
-//   doc,
-//   getDoc,
-//   query,
-//   where,
-//   setDoc,
-//   deleteDoc,
-// } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -32,10 +24,12 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APPID,
 };
 
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+export const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const auth = firebaseApp.auth();
+const db = getFirestore(firebaseApp);
 // const storage = getStorage(app);
-const db = getFirestore(app);
+
+// U S E R S
 
 export const registerNewUser = async (user) => {
   try {
@@ -57,25 +51,39 @@ export const getUserInfo = async (uid) => {
   }
 };
 
-//login:
-// signInWithEmailAndPassword(auth, email, password)
-//   .then((userCredential) => {
-//     // Signed in
-//     const user = userCredential.user;
-//     console.log(user);
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//     console.log(errorCode, errorMessage);
-//   });
+// C O M P R A S
 
-//logout:
-// signOut(auth)
-//   .then(() => {
-//     // Sign-out successful.
-//   })
-//   .catch((error) => {
-//     // An error happened.
-//   });
+export const addNewItem = async (item) => {
+  try {
+    const docRef = collection(db, "items");
+    const res = await addDoc(docRef, item);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getItems = async () => {
+  const items = [];
+  try {
+    const collectionRef = collection(db, "items");
+    const res = await getDocs(collectionRef);
+
+    res.forEach((doc) => {
+      const item = { ...doc.data() };
+      items.push(item);
+    });
+    return items;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const listenItems = (callback) => {
+  onSnapshot(collection(db, "items"), (perro) => {
+    const items = [];
+    perro.forEach((doc) => items.push(doc.data()));
+    console.log(items);
+    callback(items);
+  });
+};

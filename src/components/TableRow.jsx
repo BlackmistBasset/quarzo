@@ -12,7 +12,7 @@ export const TableRow = ({
   recibido,
 }) => {
   return (
-    <HStack mx={5} px={1} border="1px">
+    <HStack ml={5} px={1} border="1px">
       <Box
         fontWeight="bold"
         fontSize="12px"
@@ -61,7 +61,18 @@ export const TableRow = ({
         fontWeight="bold"
         fontSize="12px"
         color="gray.600"
-        w="15%"
+        w="10%"
+        borderRight="1px"
+        paddingLeft="10px"
+        py="5px"
+      >
+        Mabel
+      </Box>
+      <Box
+        fontWeight="bold"
+        fontSize="12px"
+        color="gray.600"
+        w="10%"
         paddingLeft="10px"
         borderRight="1px"
         py="5px"
@@ -72,7 +83,7 @@ export const TableRow = ({
         fontWeight="bold"
         fontSize="12px"
         color="gray.600"
-        w="20%"
+        w="15%"
         borderRight="1px"
         paddingLeft="10px"
         py="5px"
