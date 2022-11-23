@@ -2,6 +2,8 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
 
+// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
 import {
   collection,
   doc,
@@ -12,8 +14,6 @@ import {
   getFirestore,
   onSnapshot,
 } from "firebase/firestore";
-
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_APIKEY,
@@ -58,22 +58,6 @@ export const addNewItem = async (item) => {
     const docRef = collection(db, "items");
     const res = await addDoc(docRef, item);
     return res;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-export const getItems = async () => {
-  const items = [];
-  try {
-    const collectionRef = collection(db, "items");
-    const res = await getDocs(collectionRef);
-
-    res.forEach((doc) => {
-      const item = { ...doc.data() };
-      items.push(item);
-    });
-    return items;
   } catch (err) {
     console.log(err);
   }

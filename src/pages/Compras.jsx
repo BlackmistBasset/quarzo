@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { getItems, listenItems } from "../firebase/firebase";
+import { listenItems } from "../firebase/firebase";
 
 export const Compras = () => {
   const [state, setState] = useState(0);
@@ -26,19 +26,14 @@ export const Compras = () => {
   const { onOpen } = useDisclosure();
 
   useEffect(() => {
-    const loadItems = async () => {
-      await getItems().then((items) => {
-        if (items.length > 0) {
-          setHasItems(true);
-          setItems(items);
-          listenItems((items) => {
-            setItems(items);
-          });
-        }
-      });
-    };
-    loadItems();
+    listenItems((items) => {
+      if (items.length > 0) {
+        setHasItems(true);
+        setItems(items);
+      }
+    });
   }, [state]);
+
   const handleUserLoggedIn = async (user) => {
     setUserInfo(user);
     setState(2);
@@ -162,150 +157,31 @@ export const Compras = () => {
               items.map((item) => (
                 <TableRow
                   key={item.id}
-                  fechaSolicitado={item.fechaSolicitado}
                   nombreItem={item.nombreItem}
                   um={item.um}
                   cantidad={item.cantidad}
+                  fechaSolicitado={item.fechaSolicitado}
                   fechaRequerido={item.fechaRequerido}
+                  tomaPedido={item.tomaPedido}
                   estadoPedido={item.estadoPedido}
-                  recibido={item.recibido}
+                  estadoEntrega={item.estadoEntrega}
+                  recibidoEnObra={item.recibidoEnObra}
+                  consultasCompras={item.consultasCompras}
+                  linkRef={item.linkRef}
+                  proveedor={item.proveedor}
+                  fechaDeCompra={item.fechaDeCompra}
+                  montoFactura={item.montoFactura}
+                  formaDePago={item.formaDePago}
+                  linkMl={item.linkMl}
+                  imgComprobante={item.imgComprobante}
+                  imgRef={item.linkRef}
+                  fechaCreado={item.fechaCreado}
+                  autor={item.autor}
+                  ediciones={item.ediciones}
+                  fechaUltimaModificacion={item.fechaUltimaModificacion}
+                  userUltimaModificacion={item.userUltimaModificacion}
                 />
               ))}
-            {/* <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="Jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="1/11/22"
-              nombreItem="pepe"
-              um="unidad"
-              cantidad="12345"
-              fechaRequerido="20/11/2050"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/36/22"
-              nombreItem="lauti"
-              um="unidad"
-              cantidad="1"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/4/22"
-              nombreItem="marcos"
-              um="unidad"
-              cantidad="50"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="Jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="1/11/22"
-              nombreItem="pepe"
-              um="unidad"
-              cantidad="12345"
-              fechaRequerido="20/11/2050"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/36/22"
-              nombreItem="lauti"
-              um="unidad"
-              cantidad="1"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/4/22"
-              nombreItem="marcos"
-              um="unidad"
-              cantidad="50"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="Jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/11/22"
-              nombreItem="jerbito"
-              um="unidad"
-              cantidad="1000"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="1/11/22"
-              nombreItem="pepe"
-              um="unidad"
-              cantidad="12345"
-              fechaRequerido="20/11/2050"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/36/22"
-              nombreItem="lauti"
-              um="unidad"
-              cantidad="1"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            />
-            <TableRow
-              fechaSolicitado="15/4/22"
-              nombreItem="marcos"
-              um="unidad"
-              cantidad="50"
-              fechaRequerido="20/11/22"
-              estadoPedido="Pendiente"
-              recibido="Sí"
-            /> */}
           </Box>
           <HStack
             backgroundColor="gray.100"
@@ -325,7 +201,7 @@ export const Compras = () => {
             >
               Compras chicas
             </Button>
-            <NewItemForm />
+            <NewItemForm user={userInfo} />
           </HStack>
         </Box>
       </Wrapper>

@@ -28,7 +28,24 @@ export const ModalDetails = ({
   cantidad,
   fechaRequerido,
   estadoPedido,
-  recibido,
+  recibidoEnObra,
+  id,
+  tomaPedido,
+  estadoEntrega,
+  consultasCompras,
+  linkRef,
+  proveedor,
+  fechaDeCompra,
+  montoFactura,
+  formaDePago,
+  linkMl,
+  imgComprobante,
+  imgRef,
+  fechaCreado,
+  autor,
+  ediciones,
+  fechaUltimaModificacion,
+  userUltimaModificacion,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
@@ -67,11 +84,11 @@ export const ModalDetails = ({
                   </HStack>
                   <HStack>
                     <Text fontWeight="bold">Toma pedido:</Text>
-                    <Text>@user</Text>
+                    <Text>{tomaPedido}</Text>
                   </HStack>
                   <HStack>
                     <Text fontWeight="bold">Estado de la entrega:</Text>
-                    <Text>Proveedor 9/3</Text>
+                    <Text>{estadoEntrega}</Text>
                   </HStack>
                 </Box>
                 <Box>
@@ -89,7 +106,7 @@ export const ModalDetails = ({
                   </HStack>
                   <HStack>
                     <Text fontWeight="bold">Recibido en obra:</Text>
-                    <Text>{recibido}</Text>
+                    <Text>{recibidoEnObra}</Text>
                   </HStack>
                 </Box>
               </Flex>
@@ -118,11 +135,13 @@ export const ModalDetails = ({
               <TabPanels>
                 <TabPanel height="100px">
                   <Flex justifyContent="space-between">
-                    <Box>
+                    <Box width="55%">
                       <Text fontWeight="bold">Consultas de compras:</Text>
-                      <Text color="red" paddingLeft="5px">
-                        Confirmar medida
-                      </Text>
+                      <Box height="60px" overflow="auto">
+                        <Text color="red" paddingLeft="5px">
+                          {consultasCompras}
+                        </Text>
+                      </Box>
                     </Box>
                     <Box>
                       <HStack>
@@ -133,11 +152,7 @@ export const ModalDetails = ({
                           color="blue.500"
                           textDecoration="underline"
                         >
-                          <a
-                            href="http://www.google.com"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a href={linkRef} target="_blank" rel="noreferrer">
                             Ver Link
                           </a>
                         </Button>
@@ -162,21 +177,21 @@ export const ModalDetails = ({
                     <Box>
                       <HStack>
                         <Text fontWeight="bold">Proveedor:</Text>
-                        <Text>@nombreProveedor</Text>
+                        <Text>{proveedor}</Text>
                       </HStack>
                       <HStack>
                         <Text fontWeight="bold">Monto factura:</Text>
-                        <Text>$15.000,00</Text>
+                        <Text>${montoFactura}</Text>
                       </HStack>
                     </Box>
                     <Box>
                       <HStack>
                         <Text fontWeight="bold">Fecha de compra:</Text>
-                        <Text>4/11/22</Text>
+                        <Text>{fechaDeCompra}</Text>
                       </HStack>
                       <HStack>
                         <Text fontWeight="bold">Forma de pago:</Text>
-                        <Text>Efectivo</Text>
+                        <Text>{formaDePago}</Text>
                       </HStack>
                     </Box>
                   </Flex>
@@ -192,11 +207,7 @@ export const ModalDetails = ({
                           color="blue.500"
                           textDecoration="underline"
                         >
-                          <a
-                            href="http://www.google.com"
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a href={linkMl} target="_blank" rel="noreferrer">
                             Ver Link
                           </a>
                         </Button>
@@ -223,31 +234,31 @@ export const ModalDetails = ({
                     <Flex justifyContent="space-between">
                       <HStack>
                         <Text fontWeight="bold">Modificado por:</Text>
-                        <Text>@usuario</Text>
+                        <Text>{userUltimaModificacion}</Text>
                       </HStack>
                       <HStack>
                         <Text fontWeight="bold">Fecha:</Text>
-                        <Text>3/11/22</Text>
+                        <Text>{fechaUltimaModificacion}</Text>
                       </HStack>
                     </Flex>
                     <Flex justifyContent="space-between">
                       <HStack>
                         <Text fontWeight="bold">Modificado por:</Text>
-                        <Text>@usuario</Text>
+                        <Text>{userUltimaModificacion}</Text>
                       </HStack>
                       <HStack>
                         <Text fontWeight="bold">Fecha:</Text>
-                        <Text>4/11/22</Text>
+                        <Text>{fechaUltimaModificacion}</Text>
                       </HStack>
                     </Flex>
                     <Flex justifyContent="space-between">
                       <HStack>
                         <Text fontWeight="bold">Modificado por:</Text>
-                        <Text>@usuario</Text>
+                        <Text>{userUltimaModificacion}</Text>
                       </HStack>
                       <HStack>
                         <Text fontWeight="bold">Fecha:</Text>
-                        <Text>5/11/22</Text>
+                        <Text>{fechaUltimaModificacion}</Text>
                       </HStack>
                     </Flex>
                   </Flex>
@@ -259,21 +270,21 @@ export const ModalDetails = ({
               <Box>
                 <HStack>
                   <Text fontWeight="bold">Creado por:</Text>
-                  <Text>@user</Text>
+                  <Text>{autor}</Text>
                 </HStack>
                 <HStack>
                   <Text fontWeight="bold">Última modificación por:</Text>
-                  <Text>@user</Text>
+                  <Text>{userUltimaModificacion}</Text>
                 </HStack>
               </Box>
               <Box>
                 <HStack>
                   <Text fontWeight="bold">Fecha:</Text>
-                  <Text>{fechaSolicitado}</Text>
+                  <Text>{fechaCreado}</Text>
                 </HStack>
                 <HStack>
                   <Text fontWeight="bold">Fecha:</Text>
-                  <Text>5/11/22</Text>
+                  <Text>{fechaUltimaModificacion}</Text>
                 </HStack>
               </Box>
             </Flex>

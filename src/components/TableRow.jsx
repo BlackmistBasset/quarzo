@@ -9,7 +9,24 @@ export const TableRow = ({
   cantidad,
   fechaRequerido,
   estadoPedido,
-  recibido,
+  recibidoEnObra,
+  tomaPedido,
+  estadoEntrega,
+  id,
+  consultasCompras,
+  linkRef,
+  proveedor,
+  fechaDeCompra,
+  montoFactura,
+  formaDePago,
+  linkMl,
+  imgComprobante,
+  imgRef,
+  fechaCreado,
+  autor,
+  ediciones,
+  fechaUltimaModificacion,
+  userUltimaModificacion,
 }) => {
   return (
     <HStack ml={5} px={1} border="1px">
@@ -66,7 +83,7 @@ export const TableRow = ({
         paddingLeft="10px"
         py="5px"
       >
-        Mabel
+        {tomaPedido}
       </Box>
       <Box
         fontWeight="bold"
@@ -99,7 +116,7 @@ export const TableRow = ({
         paddingLeft="10px"
         py="5px"
       >
-        {recibido}
+        {recibidoEnObra}
       </Box>
       <Box
         fontWeight="bold"
@@ -115,8 +132,24 @@ export const TableRow = ({
           um={um}
           cantidad={cantidad}
           fechaRequerido={fechaRequerido}
+          tomaPedido={tomaPedido}
           estadoPedido={estadoPedido}
-          recibido={recibido}
+          estadoEntrega={estadoEntrega}
+          recibidoEnObra={recibidoEnObra}
+          consultasCompras={consultasCompras}
+          linkRef={linkRef}
+          proveedor={proveedor}
+          fechaDeCompra={fechaDeCompra}
+          montoFactura={montoFactura}
+          formaDePago={formaDePago}
+          linkMl={linkMl}
+          imgComprobante={imgComprobante}
+          imgRef={imgRef}
+          fechaCreado={fechaCreado}
+          autor={autor}
+          ediciones={ediciones}
+          fechaUltimaModificacion={fechaUltimaModificacion}
+          userUltimaModificacion={userUltimaModificacion}
         />
       </Box>
     </HStack>
