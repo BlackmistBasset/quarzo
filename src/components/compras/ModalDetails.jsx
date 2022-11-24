@@ -1,10 +1,15 @@
 import React from "react";
 
 import {
-  Button,
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  Modal,
+  useDisclosure,
+  Button,
   Flex,
   Box,
   Text,
@@ -13,11 +18,6 @@ import {
   TabPanels,
   Tab,
   TabPanel,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalFooter,
-  useDisclosure,
   HStack,
 } from "@chakra-ui/react";
 

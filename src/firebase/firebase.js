@@ -9,8 +9,8 @@ import {
   doc,
   setDoc,
   getDoc,
-  addDoc,
   getDocs,
+  addDoc,
   getFirestore,
   onSnapshot,
 } from "firebase/firestore";
@@ -51,6 +51,17 @@ export const getUserInfo = async (uid) => {
   }
 };
 
+export const updateUser = async (user) => {
+  try {
+    const collectionRef = collection(db, "users");
+    console.log(user);
+    const docRef = doc(collectionRef, user.uid);
+    await setDoc(docRef, user);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // C O M P R A S
 
 export const addNewItem = async (item) => {
@@ -70,4 +81,30 @@ export const listenItems = (callback) => {
     console.log(items);
     callback(items);
   });
+};
+
+// O B R A S
+
+export const addNewObra = async (obra) => {
+  try {
+    const docRef = collection(db, "obras");
+    const res = await addDoc(docRef, obra);
+    return res;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getObras = async () => {
+  const obras = [];
+  try {
+    const querySnapshot = await getDocs(collection(db, "obras"));
+    querySnapshot.forEach((obra) => {
+      obras.push(obra.data());
+    });
+
+    return obras;
+  } catch (err) {
+    console.log(err);
+  }
 };

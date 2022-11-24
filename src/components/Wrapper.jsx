@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebase";
 
+import { ObrasModal } from "./obras/ObrasModal";
+import { AdministrarObras } from "./obras/AdministrarObras";
+
 import { BiExit } from "react-icons/bi";
 import { Center, Box, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 
@@ -30,7 +33,7 @@ export const Wrapper = ({ userInfo, children }) => {
           height="7vh"
         >
           <Text p={2} ml="20px">
-            {userInfo && userInfo.firstName}
+            {userInfo && userInfo.userName}
           </Text>
           <Text p={2} color="red" ml="20px">
             Caja: $10000
@@ -81,26 +84,10 @@ export const Wrapper = ({ userInfo, children }) => {
           alignItems="center"
         >
           <Text ml="20px" p={2}>
-            OBRA: @Nombre de la obra
+            OBRA: {userInfo.currentObra}
           </Text>
-          <Button
-            size="sm"
-            border="1px"
-            borderColor="gray.500"
-            _hover={{ bg: "blackAlpha.400" }}
-            ml="20px"
-          >
-            CAMBIAR
-          </Button>
-          <Button
-            size="sm"
-            border="1px"
-            borderColor="gray.500"
-            _hover={{ bg: "blackAlpha.400" }}
-            ml="20px"
-          >
-            Listado de obras
-          </Button>
+          <ObrasModal userInfo={userInfo} />
+          <AdministrarObras />
         </Flex>
         <Box m={5}>
           <Center

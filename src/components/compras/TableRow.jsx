@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, HStack } from "@chakra-ui/react";
-import { ModalDetails } from "../components/ModalDetails";
+import { ModalDetails } from "./ModalDetails";
 
 export const TableRow = ({
   fechaSolicitado,

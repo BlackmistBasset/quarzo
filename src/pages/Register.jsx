@@ -63,6 +63,8 @@ export const Register = () => {
           firstName: data.firstName,
           lastName: data.lastName,
           userType: data.userType,
+          userName: data.firstName[0] + data.lastName,
+          currentObra: "",
         };
         registerNewUser(user);
         navigate("/compras");

@@ -24,8 +24,9 @@ import {
   ModalContent,
   useDisclosure,
   ModalOverlay,
+  ModalCloseButton,
 } from "@chakra-ui/react";
-import { addNewItem } from "../firebase/firebase";
+import { addNewItem } from "../../firebase/firebase";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -90,10 +91,12 @@ export const NewItemForm = ({ user }) => {
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
         />
+
         <ModalContent autoFocus={true} py={4}>
-          <Text fontWeight="bold" ml={4}>
+          <Text fontWeight="bold" ml={4} pb={2}>
             CARGA DE ÍTEM
           </Text>
+          <ModalCloseButton m={2} pb={2} />
           <Stack
             as="form"
             onSubmit={handleSubmit(itemUpload)}

@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import { Wrapper } from "../components/Wrapper";
-import { TableRow } from "../components/TableRow";
-import { NewItemForm } from "../components/NewItemForm";
+import { TableRow } from "../components/compras/TableRow";
+import { NewItemForm } from "../components/compras/NewItemForm";
 import { UserProvider } from "../components/UserProvider";
 
-import {
-  Box,
-  Button,
-  useDisclosure,
-  HStack,
-  Center,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, HStack, Center, Spinner, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { listenItems } from "../firebase/firebase";
 
@@ -23,7 +15,6 @@ export const Compras = () => {
   const [hasItems, setHasItems] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
-  const { onOpen } = useDisclosure();
 
   useEffect(() => {
     listenItems((items) => {
@@ -37,6 +28,11 @@ export const Compras = () => {
   const handleUserLoggedIn = async (user) => {
     setUserInfo(user);
     setState(2);
+    // if (!userInfo.currentObra) {
+    //   alert(
+    //     "No hay ninguna obra asignada a éste usuario. Por favor seleccioná una desde la opción <<Cambiar de obra>>"
+    //   );
+    // }
   };
 
   const handleUserNotLoggedIn = () => navigate("/login");
@@ -192,13 +188,7 @@ export const Compras = () => {
             pr="15px"
             justifyContent="flex-end"
           >
-            <Button
-              onClick={onOpen}
-              border="1px"
-              fontSize="12px"
-              mx="10px"
-              size="md"
-            >
+            <Button border="1px" fontSize="12px" mx="10px" size="md">
               Compras chicas
             </Button>
             <NewItemForm user={userInfo} />
