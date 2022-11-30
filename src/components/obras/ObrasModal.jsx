@@ -64,7 +64,7 @@ export const ObrasModal = ({ userInfo }) => {
                   obras.map((obra) => (
                     <Obra
                       nombreObra={obra.nombreObra}
-                      key={obra.id}
+                      key={obra.nombreObra}
                       userInfo={userInfo}
                       closeModal={onClose}
                     />

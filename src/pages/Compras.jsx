@@ -7,11 +7,12 @@ import { UserProvider } from "../components/UserProvider";
 
 import { Box, Button, HStack, Center, Spinner, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { listenItems } from "../firebase/firebase";
+import { getSingleObra, listenItems } from "../firebase/firebase";
 
 export const Compras = () => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState();
+  const [selectedObra, setSelectedObra] = useState();
   const [hasItems, setHasItems] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
@@ -33,6 +34,11 @@ export const Compras = () => {
     //     "No hay ninguna obra asignada a éste usuario. Por favor seleccioná una desde la opción <<Cambiar de obra>>"
     //   );
     // }
+    await getSingleObra(user.currentObra).then((obra) => {
+      if (obra) {
+        setSelectedObra(obra);
+      }
+    });
   };
 
   const handleUserNotLoggedIn = () => navigate("/login");
@@ -191,7 +197,7 @@ export const Compras = () => {
             <Button border="1px" fontSize="12px" mx="10px" size="md">
               Compras chicas
             </Button>
-            <NewItemForm user={userInfo} />
+            <NewItemForm user={userInfo} selectedObra={selectedObra} />
           </HStack>
         </Box>
       </Wrapper>

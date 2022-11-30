@@ -52,8 +52,7 @@ export const NewObraForm = () => {
     newObra.fechaCreada = new Date().toLocaleDateString();
     newObra.presupuestos = ["presupuestos"];
     newObra.contratistasYServicios = ["contratistas y servicios"];
-    newObra.compras = ["items"];
-    newObra.id = uuidv4();
+    newObra.compras = [];
     await addNewObra(newObra);
   };
 

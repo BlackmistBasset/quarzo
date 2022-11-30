@@ -26,7 +26,7 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { addNewItem } from "../../firebase/firebase";
+import { addItemToObra } from "../../firebase/firebase";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -47,9 +47,8 @@ const schema = Yup.object({
   linkMl: Yup.string(),
 });
 
-export const NewItemForm = ({ user }) => {
+export const NewItemForm = ({ user, selectedObra }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const itemUpload = async (item) => {
     if (item) {
       let parsedItem = { ...item };
@@ -67,8 +66,8 @@ export const NewItemForm = ({ user }) => {
       parsedItem.fechaUltimaModificacion = new Date().toLocaleDateString();
       parsedItem.userUltimaModificacion = user.firstName;
       parsedItem.ediciones = [];
-      console.log(parsedItem);
-      await addNewItem(parsedItem);
+
+      await addItemToObra(parsedItem, selectedObra.id);
       onClose();
     }
   };
