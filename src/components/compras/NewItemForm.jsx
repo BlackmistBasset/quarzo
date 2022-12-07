@@ -66,6 +66,7 @@ export const NewItemForm = ({ user, selectedObra }) => {
       parsedItem.fechaUltimaModificacion = new Date().toLocaleDateString();
       parsedItem.userUltimaModificacion = user.firstName;
       parsedItem.ediciones = [];
+      parsedItem.perteneceAObra = selectedObra.id;
 
       await addItemToObra(parsedItem, selectedObra.id);
       onClose();

@@ -20,8 +20,10 @@ import {
   TabPanel,
   HStack,
 } from "@chakra-ui/react";
+import { EliminarItem } from "./EliminarItem";
 
 export const ModalDetails = ({
+  perteneceAObra,
   fechaSolicitado,
   nombreItem,
   um,
@@ -298,7 +300,10 @@ export const ModalDetails = ({
             >
               Editar Item
             </Button>
-            <Button variant="ghost">Eliminar item</Button>
+            <EliminarItem
+              nombreItem={nombreItem}
+              perteneceAObra={perteneceAObra}
+            />
           </ModalFooter>
         </ModalContent>
       </Modal>

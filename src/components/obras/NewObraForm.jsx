@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 
-import { v4 as uuidv4 } from "uuid";
-
-import { addNewObra } from "../../firebase/firebase";
+import { addNewObra, getJefesDeObra } from "../../firebase/firebase";
 
 import {
   Text,
@@ -33,8 +31,15 @@ const schema = Yup.object({
 });
 
 export const NewObraForm = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [jefesDeObra, setJefesDeObra] = useState([]);
+  useEffect(() => {
+    const getJefes = async () => {
+      await getJefesDeObra().then((jefes) => setJefesDeObra(jefes));
+    };
+    getJefes();
+  }, []);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     register,
     handleSubmit,
@@ -45,15 +50,14 @@ export const NewObraForm = () => {
 
   const handleAddItem = async (data) => {
     console.log(data);
-    if (data) {
-      onClose();
-    }
     const newObra = { ...data };
     newObra.fechaCreada = new Date().toLocaleDateString();
     newObra.presupuestos = ["presupuestos"];
     newObra.contratistasYServicios = ["contratistas y servicios"];
     newObra.compras = [];
     await addNewObra(newObra);
+    onClose();
+    window.location.reload();
   };
 
   return (
@@ -102,9 +106,14 @@ export const NewObraForm = () => {
                   borderColor="gray.500"
                   {...register("jefeDeObra")}
                 >
-                  <option value="juanito">Juanito</option>
-                  <option value="fulanito">Fulanito</option>
-                  <option value="menganito">Menganito</option>
+                  {jefesDeObra.length > 0 &&
+                    jefesDeObra.map((jefe, index) => {
+                      return (
+                        <option value={jefe} key={`${jefe}-${jefe[index]}`}>
+                          {jefe}
+                        </option>
+                      );
+                    })}
                 </Select>
                 <FormErrorMessage>
                   {errors.jefeDeObra?.message}

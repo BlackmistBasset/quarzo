@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { signOut } from "firebase/auth";
-import { auth } from "../firebase/firebase";
+import { auth, getObras } from "../firebase/firebase";
 
 import { ObrasModal } from "./obras/ObrasModal";
 import { AdministrarObras } from "./obras/AdministrarObras";
@@ -11,6 +11,13 @@ import { BiExit } from "react-icons/bi";
 import { Center, Box, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 
 export const Wrapper = ({ userInfo, children }) => {
+  const [obras, setObras] = useState([]);
+  useEffect(() => {
+    const getAllObras = async () => {
+      await getObras().then((obras) => setObras(obras));
+    };
+    getAllObras();
+  }, []);
   const navigate = useNavigate();
   const handleLogOut = () => {
     signOut(auth)
@@ -87,7 +94,7 @@ export const Wrapper = ({ userInfo, children }) => {
             OBRA: {userInfo.currentObra}
           </Text>
           <ObrasModal userInfo={userInfo} />
-          <AdministrarObras />
+          <AdministrarObras obras={obras} />
         </Flex>
         <Box m={5}>
           <Center

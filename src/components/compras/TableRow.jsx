@@ -27,6 +27,7 @@ export const TableRow = ({
   ediciones,
   fechaUltimaModificacion,
   userUltimaModificacion,
+  perteneceAObra,
 }) => {
   return (
     <HStack ml={5} px={1} border="1px">
@@ -127,6 +128,7 @@ export const TableRow = ({
         py="5px"
       >
         <ModalDetails
+          perteneceAObra={perteneceAObra}
           fechaSolicitado={fechaSolicitado}
           nombreItem={nombreItem}
           um={um}

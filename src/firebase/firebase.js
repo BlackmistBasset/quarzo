@@ -17,6 +17,7 @@ import {
   where,
   updateDoc,
   arrayUnion,
+  deleteDoc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -103,6 +104,23 @@ export const addItemToObra = async (item, obra) => {
   }
 };
 
+export const removeItem = async (nombreItem, obra) => {
+  try {
+    console.log(nombreItem, obra);
+    const docRef = doc(db, "obras", obra);
+    const document = await getDoc(docRef);
+    const compras = document.data().compras;
+    let newComprasArray = compras.filter(
+      (item) => item.nombreItem !== nombreItem
+    );
+    await updateDoc(docRef, {
+      compras: newComprasArray,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // O B R A S
 
 export const addNewObra = async (obra) => {
@@ -140,4 +158,19 @@ export const getSingleObra = async (obra) => {
 
   querySnapshot.forEach((doc) => resObra.push(doc.data()));
   return resObra[0];
+};
+
+export const deleteObra = async (obraId) => {
+  await deleteDoc(doc(db, "obras", obraId));
+};
+
+// U T I L I D A D E S
+export const getJefesDeObra = async () => {
+  const jefes = [];
+  const querySnapshot = await getDocs(collection(db, "users"));
+  querySnapshot.forEach((doc) => {
+    const resDoc = doc.data();
+    if (resDoc.userType === "jefeDeObra") jefes.push(resDoc.userName);
+  });
+  return jefes;
 };

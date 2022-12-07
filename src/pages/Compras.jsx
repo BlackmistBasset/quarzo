@@ -29,11 +29,6 @@ export const Compras = () => {
   const handleUserLoggedIn = async (user) => {
     setUserInfo(user);
     setState(2);
-    // if (!userInfo.currentObra) {
-    //   alert(
-    //     "No hay ninguna obra asignada a éste usuario. Por favor seleccioná una desde la opción <<Cambiar de obra>>"
-    //   );
-    // }
     await getSingleObra(user.currentObra).then((obra) => {
       if (obra) {
         setSelectedObra(obra);
@@ -161,6 +156,7 @@ export const Compras = () => {
                   key={item.id}
                   nombreItem={item.nombreItem}
                   um={item.um}
+                  perteneceAObra={item.perteneceAObra}
                   cantidad={item.cantidad}
                   fechaSolicitado={item.fechaSolicitado}
                   fechaRequerido={item.fechaRequerido}

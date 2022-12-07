@@ -1,6 +1,5 @@
 import React from "react";
 
-import { AdminObra } from "./AdminObra";
 import {
   Box,
   Text,
@@ -13,11 +12,16 @@ import {
   Modal,
   ModalFooter,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
+import { EliminarObra } from "./EliminarObra";
 
-import { NewObraForm } from "./NewObraForm";
-
-export const AdministrarObras = ({ obras }) => {
+export const ObraDetails = ({
+  nombreObra,
+  fechaCreacion,
+  jefeAsignado,
+  id,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -25,15 +29,12 @@ export const AdministrarObras = ({ obras }) => {
         size="sm"
         border="1px"
         borderColor="gray.500"
-        _hover={{ bg: "blackAlpha.400" }}
-        ml="20px"
-        fontSize="12px"
-        fontWeight="bold"
+        m={1}
         onClick={onOpen}
       >
-        ADMINISTRAR OBRAS
+        Ver obra
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="md">
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(90deg)"
@@ -41,7 +42,7 @@ export const AdministrarObras = ({ obras }) => {
         <ModalContent autoFocus={true} p={2}>
           <ModalHeader>
             <Text fontWeight="bold" fontSize="14px">
-              ADMINISTRAR OBRAS
+              DETALLE DE OBRA
             </Text>
           </ModalHeader>
           <ModalCloseButton m={2} />
@@ -50,27 +51,32 @@ export const AdministrarObras = ({ obras }) => {
               border="1px"
               borderColor="gray.500"
               borderRadius="5px"
-              p={1}
+              p={2}
               my={2}
             >
-              <Box height="300px" overflow="auto">
-                {obras.length > 0 &&
-                  obras.map((obra) => {
-                    return (
-                      <AdminObra
-                        key={obra.id}
-                        nombreObra={obra.nombreObra}
-                        fechaCreacion={obra.fechaCreada}
-                        jefeAsignado={obra.jefeDeObra}
-                        id={obra.id}
-                      />
-                    );
-                  })}
-              </Box>
+              <HStack py={2}>
+                <Text fontWeight="bold">Nombre de la obra:</Text>
+                <Text>{nombreObra}</Text>
+              </HStack>
+
+              <HStack py={1}>
+                <Text fontWeight="bold">Fecha de creación:</Text>
+                <Text>{fechaCreacion}</Text>
+              </HStack>
+
+              <HStack py={2}>
+                <Text fontWeight="bold">Jefe de obra asignado:</Text>
+                <Text>{jefeAsignado}</Text>
+              </HStack>
             </Box>
           </ModalBody>
           <ModalFooter>
-            <NewObraForm />
+            <Box>
+              <Button size="sm" border="1px" borderColor="gray.500" m={1}>
+                Editar obra
+              </Button>
+              <EliminarObra id={id} nombreObra={nombreObra} />
+            </Box>
           </ModalFooter>
         </ModalContent>
       </Modal>
