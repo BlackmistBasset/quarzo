@@ -18,10 +18,10 @@ import {
   FormControl,
   FormLabel,
   Input,
+  FormErrorMessage,
   Button,
   Stack,
   InputGroup,
-  FormErrorMessage,
   InputRightElement,
   Spinner,
 } from "@chakra-ui/react";
@@ -45,10 +45,10 @@ export const Login = () => {
 
   const handleLogin = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then((userCredential) => {
+      .then(() => {
         setLoginError(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setLoginError(true);
       });
   };

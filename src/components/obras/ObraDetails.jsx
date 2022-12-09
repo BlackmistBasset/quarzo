@@ -15,6 +15,7 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { EliminarObra } from "./EliminarObra";
+import { EditarObra } from "./EditarObra";
 
 export const ObraDetails = ({
   nombreObra,
@@ -60,21 +61,24 @@ export const ObraDetails = ({
               </HStack>
 
               <HStack py={1}>
-                <Text fontWeight="bold">Fecha de creación:</Text>
-                <Text>{fechaCreacion}</Text>
+                <Text fontWeight="bold">Jefe de obra asignado:</Text>
+                <Text>{jefeAsignado}</Text>
               </HStack>
 
               <HStack py={2}>
-                <Text fontWeight="bold">Jefe de obra asignado:</Text>
-                <Text>{jefeAsignado}</Text>
+                <Text fontWeight="bold">Fecha de creación:</Text>
+                <Text>{fechaCreacion}</Text>
               </HStack>
             </Box>
           </ModalBody>
           <ModalFooter>
             <Box>
-              <Button size="sm" border="1px" borderColor="gray.500" m={1}>
-                Editar obra
-              </Button>
+              <EditarObra
+                id={id}
+                nombreObra={nombreObra}
+                fechaCreacion={fechaCreacion}
+                jefeAsignado={jefeAsignado}
+              />
               <EliminarObra id={id} nombreObra={nombreObra} />
             </Box>
           </ModalFooter>

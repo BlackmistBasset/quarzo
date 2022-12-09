@@ -160,6 +160,14 @@ export const getSingleObra = async (obra) => {
   return resObra[0];
 };
 
+export const editObra = async (obraId, obraChanges) => {
+  const docRef = doc(db, "obras", obraId);
+  await updateDoc(docRef, {
+    nombreObra: obraChanges.nombreObra,
+    jefeDeObra: obraChanges.jefeDeObra,
+  });
+};
+
 export const deleteObra = async (obraId) => {
   await deleteDoc(doc(db, "obras", obraId));
 };
