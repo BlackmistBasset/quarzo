@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import {
   ModalHeader,
@@ -20,9 +20,8 @@ import {
   TabPanel,
   HStack,
 } from "@chakra-ui/react";
-import { EliminarItem } from "./EliminarItem";
+import { DeleteItem } from "./DeleteItem";
 import { ViewImgModal } from "./ViewImgModal";
-import { getReferenceImg, getReceiptImg } from "../../firebase/firebase";
 
 export const ModalDetails = ({
   perteneceAObra,
@@ -50,20 +49,6 @@ export const ModalDetails = ({
   userUltimaModificacion,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [imgUrl, setImgUrl] = useState();
-  const [imgReceiptUrl, setImgReceiptUrl] = useState();
-  useEffect(() => {
-    const getImgUrls = async () => {
-      await getReferenceImg(perteneceAObra, nombreItem).then((url) =>
-        setImgUrl(url)
-      );
-      await getReceiptImg(perteneceAObra, nombreItem).then((url) =>
-        setImgReceiptUrl(url)
-      );
-    };
-    getImgUrls();
-    // eslint-disable-next-line
-  }, []);
 
   return (
     <>
@@ -178,8 +163,10 @@ export const ModalDetails = ({
                         <Text fontWeight="bold">Imagen de referencia:</Text>
                         <Text color="blue.500" textDecoration="underline">
                           <ViewImgModal
-                            imgUrl={imgUrl}
                             modalTitle="IMAGEN DE REFERENCIA"
+                            perteneceAObra={perteneceAObra}
+                            nombreItem={nombreItem}
+                            imgType="imgRef"
                           />
                         </Text>
                       </HStack>
@@ -232,8 +219,10 @@ export const ModalDetails = ({
                         <Text fontWeight="bold">Imagen comprobante:</Text>
                         <Text color="blue.500" textDecoration="underline">
                           <ViewImgModal
-                            imgUrl={imgReceiptUrl}
                             modalTitle="IMAGEN COMPROBANTE"
+                            perteneceAObra={perteneceAObra}
+                            nombreItem={nombreItem}
+                            imgType="imgRec"
                           />
                         </Text>
                       </HStack>
@@ -309,7 +298,7 @@ export const ModalDetails = ({
             >
               Editar Item
             </Button>
-            <EliminarItem
+            <DeleteItem
               nombreItem={nombreItem}
               perteneceAObra={perteneceAObra}
             />

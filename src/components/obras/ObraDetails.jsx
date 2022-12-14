@@ -14,8 +14,8 @@ import {
   useDisclosure,
   HStack,
 } from "@chakra-ui/react";
-import { EliminarObra } from "./EliminarObra";
-import { EditarObra } from "./EditarObra";
+import { DeleteObra } from "./DeleteObra";
+import { EditObra } from "./EditObra";
 
 export const ObraDetails = ({
   nombreObra,
@@ -73,13 +73,13 @@ export const ObraDetails = ({
           </ModalBody>
           <ModalFooter>
             <Box>
-              <EditarObra
+              <EditObra
                 id={id}
                 nombreObra={nombreObra}
                 fechaCreacion={fechaCreacion}
                 jefeAsignado={jefeAsignado}
               />
-              <EliminarObra id={id} nombreObra={nombreObra} />
+              <DeleteObra id={id} nombreObra={nombreObra} />
             </Box>
           </ModalFooter>
         </ModalContent>

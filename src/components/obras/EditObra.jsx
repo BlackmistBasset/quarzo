@@ -31,7 +31,7 @@ const schema = Yup.object({
   jefeDeObra: Yup.string().required("Campo requerido"),
 });
 
-export const EditarObra = ({ nombreObra, jefeAsignado, id }) => {
+export const EditObra = ({ nombreObra, jefeAsignado, id }) => {
   const [jefesDeObra, setJefesDeObra] = useState([]);
   useEffect(() => {
     console.log("asd");

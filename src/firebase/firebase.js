@@ -136,7 +136,6 @@ export const getReferenceImg = async (obraId, nombreItem) => {
   try {
     const imgRef = ref(storage, `images/${obraId}/${nombreItem}-ref.jpg`);
     const url = await getDownloadURL(imgRef);
-    console.log(url);
     return url;
   } catch (err) {
     console.log(err);
@@ -147,7 +146,6 @@ export const uploadReceiptImg = async (obraId, nombreItem, file) => {
   try {
     const imgRef = ref(storage, `images/${obraId}/${nombreItem}-rec.jpg`);
     const uploadRes = await uploadBytes(imgRef, file);
-    console.log(uploadRes);
     return uploadRes;
   } catch (err) {
     console.log(err);

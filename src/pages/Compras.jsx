@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { Wrapper } from "../components/Wrapper";
 import { TableRow } from "../components/compras/TableRow";
@@ -9,6 +9,8 @@ import { Box, Button, HStack, Center, Spinner, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { getSingleObra, listenItems } from "../firebase/firebase";
 
+import { DownloadTableExcel } from "react-export-table-to-excel";
+
 export const Compras = () => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState();
@@ -16,6 +18,8 @@ export const Compras = () => {
   const [hasItems, setHasItems] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
+
+  const tableRef = useRef(null);
 
   useEffect(() => {
     listenItems((items) => {
@@ -181,6 +185,37 @@ export const Compras = () => {
                 />
               ))}
           </Box>
+
+          <Box display="none">
+            <DownloadTableExcel
+              filename="users table"
+              sheet="users"
+              currentTableRef={tableRef.current}
+            >
+              <button> Export excel </button>
+            </DownloadTableExcel>
+
+            <table ref={tableRef}>
+              <tbody>
+                <tr>
+                  <th>Firstname</th>
+                  <th>Lastname</th>
+                  <th>Age</th>
+                </tr>
+                <tr>
+                  <td>Edison</td>
+                  <td>Padilla</td>
+                  <td>20</td>
+                </tr>
+                <tr>
+                  <td>Alberto</td>
+                  <td>Lopez</td>
+                  <td>94</td>
+                </tr>
+              </tbody>
+            </table>
+          </Box>
+
           <HStack
             backgroundColor="gray.100"
             mx={5}
