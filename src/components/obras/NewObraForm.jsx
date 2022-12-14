@@ -49,7 +49,6 @@ export const NewObraForm = () => {
   });
 
   const handleAddItem = async (data) => {
-    console.log(data);
     const newObra = { ...data };
     newObra.fechaCreada = new Date().toLocaleDateString();
     newObra.presupuestos = ["presupuestos"];

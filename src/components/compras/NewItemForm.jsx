@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -26,7 +26,11 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { addItemToObra } from "../../firebase/firebase";
+import {
+  addItemToObra,
+  uploadReceiptImg,
+  uploadReferenceImg,
+} from "../../firebase/firebase";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -41,14 +45,29 @@ const schema = Yup.object({
   consultasCompras: Yup.string(),
   linkRef: Yup.string(),
   proveedor: Yup.string(),
-  fechaDeCompra: Yup.date(),
-  montoFactura: Yup.number(),
+  fechaDeCompra: Yup.string(),
+  montoFactura: Yup.string(),
   formaDePago: Yup.string(),
   linkMl: Yup.string(),
 });
 
 export const NewItemForm = ({ user, selectedObra }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  let [nombreDelItem, setNombreDelItem] = useState();
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    const subscription = watch((value) => setNombreDelItem(value.nombreItem));
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   const itemUpload = async (item) => {
     if (item) {
       let parsedItem = { ...item };
@@ -60,6 +79,9 @@ export const NewItemForm = ({ user, selectedObra }) => {
         parsedItem.fechaDeCompra =
           parsedItem.fechaDeCompra.toLocaleDateString();
       }
+      if (parsedItem.montoFactura) {
+        parsedItem.montoFactura = parseInt(parsedItem.montoFactura);
+      }
       parsedItem.id = uuidv4();
       parsedItem.autor = user.firstName;
       parsedItem.fechaCreado = new Date().toLocaleDateString();
@@ -69,17 +91,27 @@ export const NewItemForm = ({ user, selectedObra }) => {
       parsedItem.perteneceAObra = selectedObra.id;
 
       await addItemToObra(parsedItem, selectedObra.id);
+
       onClose();
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const handleChangeFile = (e) => {
+    const files = e.target.files;
+    const fileReader = new FileReader();
+    if (fileReader && files && files.length > 0) {
+      fileReader.readAsArrayBuffer(files[0]);
+      fileReader.onload = async () => {
+        const imgData = fileReader.result;
+        if (e.target.name === "img-ref") {
+          await uploadReferenceImg(selectedObra.id, nombreDelItem, imgData);
+        }
+        if (e.target.name === "img-rec") {
+          await uploadReceiptImg(selectedObra.id, nombreDelItem, imgData);
+        }
+      };
+    }
+  };
 
   return (
     <>
@@ -286,9 +318,11 @@ export const NewItemForm = ({ user, selectedObra }) => {
                 <Input
                   borderColor="gray.500"
                   type="file"
+                  name="img-ref"
                   size="sm"
                   pt="2px"
                   mb={1}
+                  onChange={handleChangeFile}
                 ></Input>
                 <FormErrorMessage>{errors.imgRef?.message}</FormErrorMessage>
               </FormControl>
@@ -389,8 +423,10 @@ export const NewItemForm = ({ user, selectedObra }) => {
                   borderColor="gray.500"
                   type="file"
                   size="sm"
+                  name="img-rec"
                   pt="2px"
                   mb={1}
+                  onChange={handleChangeFile}
                 ></Input>
                 <FormErrorMessage>
                   {errors.imgComprobante?.message}

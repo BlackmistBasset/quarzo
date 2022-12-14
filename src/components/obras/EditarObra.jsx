@@ -31,17 +31,22 @@ const schema = Yup.object({
   jefeDeObra: Yup.string().required("Campo requerido"),
 });
 
-export const EditarObra = ({ nombreObra, fechaCreacion, jefeAsignado, id }) => {
+export const EditarObra = ({ nombreObra, jefeAsignado, id }) => {
   const [jefesDeObra, setJefesDeObra] = useState([]);
   useEffect(() => {
+    console.log("asd");
     const getJefes = async () => {
       await getJefesDeObra().then((jefes) => setJefesDeObra(jefes));
     };
     getJefes();
+    setValue("nombreObra", nombreObra);
+    setValue("jefeDeObra", jefeAsignado);
+    // eslint-disable-next-line
   }, []);
 
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -110,7 +115,7 @@ export const EditarObra = ({ nombreObra, fechaCreacion, jefeAsignado, id }) => {
                     {jefesDeObra.length > 0 &&
                       jefesDeObra.map((jefe, index) => {
                         return (
-                          <option value={jefe} key={`${jefe}-${jefe[index]}`}>
+                          <option value={jefe} key={`${jefe}-${index}`}>
                             {jefe}
                           </option>
                         );

@@ -1,8 +1,7 @@
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
-// import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import {
   collection,
@@ -29,10 +28,10 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APPID,
 };
 
-export const firebaseApp = firebase.initializeApp(firebaseConfig);
-export const auth = firebaseApp.auth();
-const db = getFirestore(firebaseApp);
-// const storage = getStorage(app);
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
 
 // U S E R S
 
@@ -106,7 +105,6 @@ export const addItemToObra = async (item, obra) => {
 
 export const removeItem = async (nombreItem, obra) => {
   try {
-    console.log(nombreItem, obra);
     const docRef = doc(db, "obras", obra);
     const document = await getDoc(docRef);
     const compras = document.data().compras;
@@ -116,6 +114,51 @@ export const removeItem = async (nombreItem, obra) => {
     await updateDoc(docRef, {
       compras: newComprasArray,
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// I M A G E N E S
+
+export const uploadReferenceImg = async (obraId, nombreItem, file) => {
+  try {
+    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-ref.jpg`);
+    const uploadRes = await uploadBytes(imgRef, file);
+    console.log(uploadRes);
+    return uploadRes;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getReferenceImg = async (obraId, nombreItem) => {
+  try {
+    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-ref.jpg`);
+    const url = await getDownloadURL(imgRef);
+    console.log(url);
+    return url;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const uploadReceiptImg = async (obraId, nombreItem, file) => {
+  try {
+    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-rec.jpg`);
+    const uploadRes = await uploadBytes(imgRef, file);
+    console.log(uploadRes);
+    return uploadRes;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getReceiptImg = async (obraId, nombreItem) => {
+  try {
+    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-rec.jpg`);
+    const url = await getDownloadURL(imgRef);
+    return url;
   } catch (err) {
     console.log(err);
   }

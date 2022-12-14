@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   ModalHeader,
@@ -21,6 +21,8 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import { EliminarItem } from "./EliminarItem";
+import { ViewImgModal } from "./ViewImgModal";
+import { getReferenceImg, getReceiptImg } from "../../firebase/firebase";
 
 export const ModalDetails = ({
   perteneceAObra,
@@ -41,8 +43,6 @@ export const ModalDetails = ({
   montoFactura,
   formaDePago,
   linkMl,
-  imgComprobante,
-  imgRef,
   fechaCreado,
   autor,
   ediciones,
@@ -50,6 +50,21 @@ export const ModalDetails = ({
   userUltimaModificacion,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [imgUrl, setImgUrl] = useState();
+  const [imgReceiptUrl, setImgReceiptUrl] = useState();
+  useEffect(() => {
+    const getImgUrls = async () => {
+      await getReferenceImg(perteneceAObra, nombreItem).then((url) =>
+        setImgUrl(url)
+      );
+      await getReceiptImg(perteneceAObra, nombreItem).then((url) =>
+        setImgReceiptUrl(url)
+      );
+    };
+    getImgUrls();
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <>
       <Button variant="link" fontSize="12px" color="blue.500" onClick={onOpen}>
@@ -162,13 +177,10 @@ export const ModalDetails = ({
                       <HStack>
                         <Text fontWeight="bold">Imagen de referencia:</Text>
                         <Text color="blue.500" textDecoration="underline">
-                          <Button
-                            variant="link"
-                            fontSize="14px"
-                            color="blue.500"
-                          >
-                            Ver Imagen
-                          </Button>
+                          <ViewImgModal
+                            imgUrl={imgUrl}
+                            modalTitle="IMAGEN DE REFERENCIA"
+                          />
                         </Text>
                       </HStack>
                     </Box>
@@ -219,13 +231,10 @@ export const ModalDetails = ({
                       <HStack>
                         <Text fontWeight="bold">Imagen comprobante:</Text>
                         <Text color="blue.500" textDecoration="underline">
-                          <Button
-                            variant="link"
-                            fontSize="14px"
-                            color="blue.500"
-                          >
-                            Ver Imagen
-                          </Button>
+                          <ViewImgModal
+                            imgUrl={imgReceiptUrl}
+                            modalTitle="IMAGEN COMPROBANTE"
+                          />
                         </Text>
                       </HStack>
                     </Box>
