@@ -22,32 +22,34 @@ import {
 } from "@chakra-ui/react";
 import { DeleteItem } from "./DeleteItem";
 import { ViewImgModal } from "./ViewImgModal";
+import { EditItem } from "./EditItem";
 
-export const ModalDetails = ({
-  perteneceAObra,
-  fechaSolicitado,
-  nombreItem,
-  um,
-  cantidad,
-  fechaRequerido,
-  estadoPedido,
-  recibidoEnObra,
-  id,
-  tomaPedido,
-  estadoEntrega,
-  consultasCompras,
-  linkRef,
-  proveedor,
-  fechaDeCompra,
-  montoFactura,
-  formaDePago,
-  linkMl,
-  fechaCreado,
-  autor,
-  ediciones,
-  fechaUltimaModificacion,
-  userUltimaModificacion,
-}) => {
+export const ModalDetails = ({ item, user, selectedObra }) => {
+  const {
+    nombreItem,
+    perteneceAObra,
+    fechaSolicitado,
+    um,
+    cantidad,
+    fechaRequerido,
+    estadoPedido,
+    recibidoEnObra,
+    id,
+    tomaPedido,
+    estadoEntrega,
+    consultasCompras,
+    linkRef,
+    proveedor,
+    fechaDeCompra,
+    montoFactura,
+    formaDePago,
+    linkMl,
+    fechaCreado,
+    autor,
+    ediciones,
+    fechaUltimaModificacion,
+    userUltimaModificacion,
+  } = item;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -290,14 +292,11 @@ export const ModalDetails = ({
             </Flex>
           </ModalBody>
           <ModalFooter>
-            <Button
-              border="1px"
-              borderColor="gray.500"
-              _hover={{ bg: "blackAlpha.400" }}
-              mr={3}
-            >
-              Editar Item
-            </Button>
+            <EditItem
+              selectedItem={item}
+              user={user}
+              selectedObra={selectedObra}
+            />
             <DeleteItem
               nombreItem={nombreItem}
               perteneceAObra={perteneceAObra}

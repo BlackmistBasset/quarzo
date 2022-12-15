@@ -2,33 +2,17 @@ import React from "react";
 import { Box, HStack } from "@chakra-ui/react";
 import { ModalDetails } from "./ModalDetails";
 
-export const TableRow = ({
-  fechaSolicitado,
-  nombreItem,
-  um,
-  cantidad,
-  fechaRequerido,
-  estadoPedido,
-  recibidoEnObra,
-  tomaPedido,
-  estadoEntrega,
-  id,
-  consultasCompras,
-  linkRef,
-  proveedor,
-  fechaDeCompra,
-  montoFactura,
-  formaDePago,
-  linkMl,
-  imgComprobante,
-  imgRef,
-  fechaCreado,
-  autor,
-  ediciones,
-  fechaUltimaModificacion,
-  userUltimaModificacion,
-  perteneceAObra,
-}) => {
+export const TableRow = ({ item, user, selectedObra }) => {
+  const {
+    fechaSolicitado,
+    nombreItem,
+    um,
+    cantidad,
+    tomaPedido,
+    fechaRequerido,
+    estadoPedido,
+    recibidoEnObra,
+  } = item;
   return (
     <HStack ml={5} px={1} border="1px">
       <Box
@@ -127,32 +111,7 @@ export const TableRow = ({
         paddingLeft="10px"
         py="5px"
       >
-        <ModalDetails
-          perteneceAObra={perteneceAObra}
-          fechaSolicitado={fechaSolicitado}
-          nombreItem={nombreItem}
-          um={um}
-          cantidad={cantidad}
-          fechaRequerido={fechaRequerido}
-          tomaPedido={tomaPedido}
-          estadoPedido={estadoPedido}
-          estadoEntrega={estadoEntrega}
-          recibidoEnObra={recibidoEnObra}
-          consultasCompras={consultasCompras}
-          linkRef={linkRef}
-          proveedor={proveedor}
-          fechaDeCompra={fechaDeCompra}
-          montoFactura={montoFactura}
-          formaDePago={formaDePago}
-          linkMl={linkMl}
-          imgComprobante={imgComprobante}
-          imgRef={imgRef}
-          fechaCreado={fechaCreado}
-          autor={autor}
-          ediciones={ediciones}
-          fechaUltimaModificacion={fechaUltimaModificacion}
-          userUltimaModificacion={userUltimaModificacion}
-        />
+        <ModalDetails item={item} user={user} selectedObra={selectedObra} />
       </Box>
     </HStack>
   );

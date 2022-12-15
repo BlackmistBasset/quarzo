@@ -4,8 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm } from "react-hook-form";
 
-import { v4 as uuidv4 } from "uuid";
-
 import {
   Flex,
   Box,
@@ -26,11 +24,7 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import {
-  addItemToObra,
-  uploadReceiptImg,
-  uploadReferenceImg,
-} from "../../firebase/firebase";
+import { uploadReceiptImg, uploadReferenceImg } from "../../firebase/firebase";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -51,11 +45,32 @@ const schema = Yup.object({
   linkMl: Yup.string(),
 });
 
-export const EditItem = ({ item }) => {
+export const EditItem = ({ selectedItem, user, selectedObra }) => {
+  const {
+    nombreItem,
+    fechaSolicitado,
+    um,
+    cantidad,
+    fechaRequerido,
+    estadoPedido,
+    recibidoEnObra,
+    tomaPedido,
+    estadoEntrega,
+    consultasCompras,
+    linkRef,
+    proveedor,
+    fechaDeCompra,
+    montoFactura,
+    formaDePago,
+    linkMl,
+  } = selectedItem;
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   let [nombreDelItem, setNombreDelItem] = useState();
+
   const {
     register,
+    setValue,
     watch,
     handleSubmit,
     formState: { errors },
@@ -68,29 +83,61 @@ export const EditItem = ({ item }) => {
     return () => subscription.unsubscribe();
   }, [watch]);
 
-  const itemUpload = async (item) => {
-    if (item) {
-      let parsedItem = { ...item };
-      parsedItem.fechaRequerido =
-        parsedItem.fechaRequerido.toLocaleDateString();
+  //Cargar values por default al form
+  useEffect(() => {
+    setValue("nombreItem", nombreItem);
+    setValue("um", um);
+    setValue("cantidad", cantidad);
+    setValue("fechaSolicitado", fechaSolicitado.split("/").reverse().join("-"));
+    setValue("fechaRequerido", fechaRequerido.split("/").reverse().join("-"));
+    setValue("tomaPedido", tomaPedido);
+    setValue("estadoPedido", estadoPedido);
+    setValue("estadoEntrega", estadoEntrega);
+    setValue("recibidoEnObra", recibidoEnObra);
+    setValue("consultasCompras", consultasCompras);
+    setValue("linkRef", linkRef);
+    setValue("proveedor", proveedor);
+    setValue("fechaDeCompra", fechaDeCompra.split("/").reverse().join("-"));
+    setValue("montoFactura", montoFactura);
+    setValue("formaDePago", formaDePago);
+    setValue("linkMl", linkMl);
+    // eslint-disable-next-line
+  }, []);
+
+  const itemUpdate = async (newItemInfo) => {
+    if (newItemInfo) {
+      let parsedItem = { ...selectedItem };
+      parsedItem.nombreItem = newItemInfo.nombreItem;
+      parsedItem.um = newItemInfo.um;
+      parsedItem.cantidad = newItemInfo.cantidad;
       parsedItem.fechaSolicitado =
-        parsedItem.fechaSolicitado.toLocaleDateString();
-      if (parsedItem.fechaDeCompra) {
-        parsedItem.fechaDeCompra =
-          parsedItem.fechaDeCompra.toLocaleDateString();
+        newItemInfo.fechaSolicitado.toLocaleDateString();
+      parsedItem.fechaRequerido =
+        newItemInfo.fechaRequerido.toLocaleDateString();
+      parsedItem.tomaPedido = newItemInfo.tomaPedido;
+      parsedItem.estadoPedido = newItemInfo.estadoPedido;
+      parsedItem.estadoEntrega = newItemInfo.estadoEntrega;
+      parsedItem.recibidoEnObra = newItemInfo.recibidoEnObra;
+      parsedItem.consultasCompras = newItemInfo.consultasCompras;
+      parsedItem.linkRef = newItemInfo.linkRef;
+      parsedItem.proveedor = newItemInfo.proveedor;
+      if (parsedItem.fechaDeCompra && newItemInfo.fechaDeCompra) {
+        let parsedDate = newItemInfo.fechaDeCompra
+          .split("-")
+          .reverse()
+          .join("/");
+        parsedItem.fechaDeCompra = parsedDate;
       }
-      if (parsedItem.montoFactura) {
-        parsedItem.montoFactura = parseInt(parsedItem.montoFactura);
+      if (parsedItem.montoFactura && newItemInfo.montoFactura) {
+        parsedItem.montoFactura = parseInt(newItemInfo.montoFactura);
       }
-      parsedItem.id = uuidv4();
-      parsedItem.autor = user.firstName;
-      parsedItem.fechaCreado = new Date().toLocaleDateString();
       parsedItem.fechaUltimaModificacion = new Date().toLocaleDateString();
       parsedItem.userUltimaModificacion = user.firstName;
-      parsedItem.ediciones = [];
-      parsedItem.perteneceAObra = selectedObra.id;
+      parsedItem.ediciones.push(selectedItem);
 
-      await addItemToObra(parsedItem, selectedObra.id);
+      console.log("anterior:", selectedItem);
+      console.log("nuevo:", parsedItem);
+      // await addItemToObra(parsedItem, selectedObra.id);
 
       onClose();
     }
@@ -115,8 +162,14 @@ export const EditItem = ({ item }) => {
 
   return (
     <>
-      <Button onClick={onOpen} border="1px" fontSize="12px" mx="10px" size="md">
-        Añadir ítem
+      <Button
+        border="1px"
+        borderColor="gray.500"
+        _hover={{ bg: "blackAlpha.400" }}
+        mr={3}
+        onClick={onOpen}
+      >
+        Editar Item
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="2xl">
         <ModalOverlay
@@ -126,12 +179,12 @@ export const EditItem = ({ item }) => {
 
         <ModalContent autoFocus={true} py={4}>
           <Text fontWeight="bold" ml={4} pb={2}>
-            CARGA DE ÍTEM
+            EDITAR ÍTEM
           </Text>
           <ModalCloseButton m={2} pb={2} />
           <Stack
             as="form"
-            onSubmit={handleSubmit(itemUpload)}
+            onSubmit={handleSubmit(itemUpdate)}
             height="80vh"
             overflow="auto"
             px={4}

@@ -76,8 +76,9 @@ export const NewItemForm = ({ user, selectedObra }) => {
       parsedItem.fechaSolicitado =
         parsedItem.fechaSolicitado.toLocaleDateString();
       if (parsedItem.fechaDeCompra) {
-        parsedItem.fechaDeCompra =
-          parsedItem.fechaDeCompra.toLocaleDateString();
+        parsedItem.fechaDeCompra = new Date(
+          parsedItem.fechaDeCompra
+        ).toLocaleDateString();
       }
       if (parsedItem.montoFactura) {
         parsedItem.montoFactura = parseInt(parsedItem.montoFactura);

@@ -158,30 +158,9 @@ export const Compras = () => {
               items.map((item) => (
                 <TableRow
                   key={item.id}
-                  nombreItem={item.nombreItem}
-                  um={item.um}
-                  perteneceAObra={item.perteneceAObra}
-                  cantidad={item.cantidad}
-                  fechaSolicitado={item.fechaSolicitado}
-                  fechaRequerido={item.fechaRequerido}
-                  tomaPedido={item.tomaPedido}
-                  estadoPedido={item.estadoPedido}
-                  estadoEntrega={item.estadoEntrega}
-                  recibidoEnObra={item.recibidoEnObra}
-                  consultasCompras={item.consultasCompras}
-                  linkRef={item.linkRef}
-                  proveedor={item.proveedor}
-                  fechaDeCompra={item.fechaDeCompra}
-                  montoFactura={item.montoFactura}
-                  formaDePago={item.formaDePago}
-                  linkMl={item.linkMl}
-                  imgComprobante={item.imgComprobante}
-                  imgRef={item.linkRef}
-                  fechaCreado={item.fechaCreado}
-                  autor={item.autor}
-                  ediciones={item.ediciones}
-                  fechaUltimaModificacion={item.fechaUltimaModificacion}
-                  userUltimaModificacion={item.userUltimaModificacion}
+                  item={item}
+                  user={userInfo}
+                  selectedObra={selectedObra}
                 />
               ))}
           </Box>
