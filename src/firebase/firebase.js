@@ -98,9 +98,29 @@ export const addItemToObra = async (item, obra) => {
     await updateDoc(docRef, {
       compras: arrayUnion(item),
     });
+    const generalRef = doc(db, "obras", "XtnjdhaYtZNPBLnL2SL9");
+    await updateDoc(generalRef, {
+      compras: arrayUnion(item),
+    });
   } catch (err) {
     console.log(err);
   }
+};
+
+export const editItem = async (obra, newItem) => {
+  const docRef = doc(db, "obras", obra);
+  const document = await getDoc(docRef);
+  const compras = document.data().compras;
+  let newComprasArray = compras.map((item) => {
+    if (item.id === newItem.id) {
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+  await updateDoc(docRef, {
+    compras: newComprasArray,
+  });
 };
 
 export const removeItem = async (nombreItem, obra) => {

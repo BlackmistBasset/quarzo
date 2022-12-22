@@ -26,11 +26,14 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
+
 import {
   addItemToObra,
   uploadReceiptImg,
   uploadReferenceImg,
 } from "../../firebase/firebase";
+
+import { parseDate } from "../../utils/utils";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -71,26 +74,34 @@ export const NewItemForm = ({ user, selectedObra }) => {
   const itemUpload = async (item) => {
     if (item) {
       let parsedItem = { ...item };
-      parsedItem.fechaRequerido =
-        parsedItem.fechaRequerido.toLocaleDateString();
-      parsedItem.fechaSolicitado =
-        parsedItem.fechaSolicitado.toLocaleDateString();
+      parsedItem.fechaRequerido = parseDate(parsedItem.fechaRequerido);
+      parsedItem.fechaSolicitado = parseDate(parsedItem.fechaSolicitado);
+
       if (parsedItem.fechaDeCompra) {
-        parsedItem.fechaDeCompra = new Date(
-          parsedItem.fechaDeCompra
-        ).toLocaleDateString();
+        parsedItem.fechaDeCompra = parseDate(
+          new Date(parsedItem.fechaDeCompra)
+        );
       }
+
       if (parsedItem.montoFactura) {
         parsedItem.montoFactura = parseInt(parsedItem.montoFactura);
       }
       parsedItem.id = uuidv4();
       parsedItem.autor = user.firstName;
-      parsedItem.fechaCreado = new Date().toLocaleDateString();
-      parsedItem.fechaUltimaModificacion = new Date().toLocaleDateString();
+      parsedItem.fechaCreado = parseDate(new Date());
+      parsedItem.fechaUltimaModificacion = parseDate(new Date());
       parsedItem.userUltimaModificacion = user.firstName;
       parsedItem.ediciones = [];
       parsedItem.perteneceAObra = selectedObra.id;
 
+      console.log("fechaCreado:", parsedItem.fechaCreado);
+      console.log(
+        "fechaUltimaModificacion:",
+        parsedItem.fechaUltimaModificacion
+      );
+      console.log("fechaDeCompra:", parsedItem.fechaDeCompra);
+      console.log("fechaSolicitado:", parsedItem.fechaSolicitado);
+      console.log("fechaRequerido:", parsedItem.fechaRequerido);
       await addItemToObra(parsedItem, selectedObra.id);
 
       onClose();

@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { Wrapper } from "../components/Wrapper";
-import { TableRow } from "../components/compras/TableRow";
 import { NewItemForm } from "../components/compras/NewItemForm";
 import { UserProvider } from "../components/UserProvider";
 
-import { Box, Button, HStack, Center, Spinner, Text } from "@chakra-ui/react";
+import { Box, Button, HStack, Center, Spinner, Select } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { getSingleObra, listenItems } from "../firebase/firebase";
 
 import { DownloadTableExcel } from "react-export-table-to-excel";
+import { TableContainer } from "../components/compras/TableContainer";
 
 export const Compras = () => {
   const [state, setState] = useState(0);
   const [items, setItems] = useState();
   const [selectedObra, setSelectedObra] = useState();
-  const [hasItems, setHasItems] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("Todos");
   const [userInfo, setUserInfo] = useState({});
   const navigate = useNavigate();
 
@@ -24,11 +24,14 @@ export const Compras = () => {
   useEffect(() => {
     listenItems((items) => {
       if (items.length > 0) {
-        setHasItems(true);
         setItems(items);
       }
     });
   }, [state]);
+
+  const handleFilterTable = (e) => {
+    setSelectedFilter(e.target.value);
+  };
 
   const handleUserLoggedIn = async (user) => {
     setUserInfo(user);
@@ -45,7 +48,30 @@ export const Compras = () => {
   if (state === 2) {
     return (
       <Wrapper userInfo={userInfo}>
-        <Box margin="auto" height="70vh">
+        <Box margin="auto" height="63vh">
+          <Box
+            backgroundColor="gray.100"
+            border="1px"
+            display="flex"
+            height="7vh"
+            alignItems="center"
+            mx={5}
+            pl={5}
+          >
+            Filtrar por:
+            <Select
+              size="sm"
+              w="40%"
+              ml="20px"
+              backgroundColor="white"
+              onChange={handleFilterTable}
+            >
+              <option value="Todos">Todos los items</option>
+              <option value="Pendiente">Estado del pedido: Pendiente</option>
+              <option value="Entregado">Estado del pedido: Entregado</option>
+              <option value="asd">Una opción vacía</option>
+            </Select>
+          </Box>
           <HStack backgroundColor="gray.100" mx={5} p={1} border="1px">
             <Box
               fontWeight="bold"
@@ -146,24 +172,12 @@ export const Compras = () => {
               DETALLES
             </Box>
           </HStack>
-          <Box height="75%" overflowY="scroll">
-            {hasItems ? (
-              ""
-            ) : (
-              <Center width="100%">
-                <Text p={3}>Aún no hay ítems cargados</Text>
-              </Center>
-            )}
-            {items &&
-              items.map((item) => (
-                <TableRow
-                  key={item.id}
-                  item={item}
-                  user={userInfo}
-                  selectedObra={selectedObra}
-                />
-              ))}
-          </Box>
+          <TableContainer
+            items={items}
+            userInfo={userInfo}
+            selectedObra={selectedObra}
+            selectedFilter={selectedFilter}
+          />
 
           <Box display="none">
             <DownloadTableExcel
@@ -205,7 +219,7 @@ export const Compras = () => {
             justifyContent="flex-end"
           >
             <Button border="1px" fontSize="12px" mx="10px" size="md">
-              Compras chicas
+              Comprobantes
             </Button>
             <NewItemForm user={userInfo} selectedObra={selectedObra} />
           </HStack>

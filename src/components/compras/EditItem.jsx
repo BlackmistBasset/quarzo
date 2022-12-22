@@ -24,7 +24,14 @@ import {
   ModalOverlay,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { uploadReceiptImg, uploadReferenceImg } from "../../firebase/firebase";
+
+import {
+  editItem,
+  uploadReceiptImg,
+  uploadReferenceImg,
+} from "../../firebase/firebase";
+
+import { parseDate, parseFechaDeCompraEdit } from "../../utils/utils";
 
 const schema = Yup.object({
   nombreItem: Yup.string().required("Campo requerido"),
@@ -110,10 +117,8 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
       parsedItem.nombreItem = newItemInfo.nombreItem;
       parsedItem.um = newItemInfo.um;
       parsedItem.cantidad = newItemInfo.cantidad;
-      parsedItem.fechaSolicitado =
-        newItemInfo.fechaSolicitado.toLocaleDateString();
-      parsedItem.fechaRequerido =
-        newItemInfo.fechaRequerido.toLocaleDateString();
+      parsedItem.fechaSolicitado = parseDate(newItemInfo.fechaSolicitado);
+      parsedItem.fechaRequerido = parseDate(newItemInfo.fechaRequerido);
       parsedItem.tomaPedido = newItemInfo.tomaPedido;
       parsedItem.estadoPedido = newItemInfo.estadoPedido;
       parsedItem.estadoEntrega = newItemInfo.estadoEntrega;
@@ -122,22 +127,16 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
       parsedItem.linkRef = newItemInfo.linkRef;
       parsedItem.proveedor = newItemInfo.proveedor;
       if (parsedItem.fechaDeCompra && newItemInfo.fechaDeCompra) {
-        let parsedDate = newItemInfo.fechaDeCompra
-          .split("-")
-          .reverse()
-          .join("/");
-        parsedItem.fechaDeCompra = parsedDate;
+        let getDate = new Date(newItemInfo.fechaDeCompra);
+        parsedItem.fechaDeCompra = parseFechaDeCompraEdit(getDate);
       }
       if (parsedItem.montoFactura && newItemInfo.montoFactura) {
         parsedItem.montoFactura = parseInt(newItemInfo.montoFactura);
       }
-      parsedItem.fechaUltimaModificacion = new Date().toLocaleDateString();
+      parsedItem.fechaUltimaModificacion = parseDate(new Date());
       parsedItem.userUltimaModificacion = user.firstName;
-      parsedItem.ediciones.push(selectedItem);
 
-      console.log("anterior:", selectedItem);
-      console.log("nuevo:", parsedItem);
-      // await addItemToObra(parsedItem, selectedObra.id);
+      await editItem(selectedObra.id, parsedItem);
 
       onClose();
     }
