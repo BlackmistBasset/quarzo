@@ -34,11 +34,12 @@ export const ModalDetails = ({ item, user, selectedObra }) => {
     fechaRequerido,
     estadoPedido,
     recibidoEnObra,
-    id,
     tomaPedido,
     estadoEntrega,
     consultasCompras,
     linkRef,
+    imgRefUrl,
+    imgRecUrl,
     proveedor,
     fechaDeCompra,
     montoFactura,
@@ -46,12 +47,10 @@ export const ModalDetails = ({ item, user, selectedObra }) => {
     linkMl,
     fechaCreado,
     autor,
-    ediciones,
     fechaUltimaModificacion,
     userUltimaModificacion,
   } = item;
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <>
       <Button variant="link" fontSize="12px" color="blue.500" onClick={onOpen}>
@@ -166,8 +165,7 @@ export const ModalDetails = ({ item, user, selectedObra }) => {
                         <Text color="blue.500" textDecoration="underline">
                           <ViewImgModal
                             modalTitle="IMAGEN DE REFERENCIA"
-                            perteneceAObra={perteneceAObra}
-                            nombreItem={nombreItem}
+                            imgLink={imgRefUrl}
                             imgType="imgRef"
                           />
                         </Text>
@@ -222,8 +220,7 @@ export const ModalDetails = ({ item, user, selectedObra }) => {
                         <Text color="blue.500" textDecoration="underline">
                           <ViewImgModal
                             modalTitle="IMAGEN COMPROBANTE"
-                            perteneceAObra={perteneceAObra}
-                            nombreItem={nombreItem}
+                            imgLink={imgRecUrl}
                             imgType="imgRec"
                           />
                         </Text>

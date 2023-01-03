@@ -18,41 +18,27 @@ import {
   Center,
 } from "@chakra-ui/react";
 
-import { getReferenceImg, getReceiptImg } from "../../firebase/firebase";
-
-export const ViewImgModal = ({
-  modalTitle,
-  perteneceAObra,
-  nombreItem,
-  imgType,
-}) => {
+export const ViewImgModal = ({ modalTitle, imgLink, imgType }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [imgUrl, setImgUrl] = useState();
+  const [imgUrl, setImgUrl] = useState("");
   useEffect(() => {
-    const getImgUrls = async () => {
-      if (imgType === "imgRef") {
-        await getReferenceImg(perteneceAObra, nombreItem).then((url) => {
-          if (url) {
-            setImgUrl(url);
-          } else {
-            setImgUrl(
-              "https://firebasestorage.googleapis.com/v0/b/quarzo-bbf31.appspot.com/o/images%2Fsample-img.webp?alt=media&token=06a7bdcc-6c38-4680-a3c5-1e22a2977c3b"
-            );
-          }
-        });
-      } else if (imgType === "imgRec") {
-        await getReceiptImg(perteneceAObra, nombreItem).then((url) => {
-          if (url) {
-            setImgUrl(url);
-          } else {
-            setImgUrl(
-              "https://firebasestorage.googleapis.com/v0/b/quarzo-bbf31.appspot.com/o/images%2Fsample-img.webp?alt=media&token=06a7bdcc-6c38-4680-a3c5-1e22a2977c3b"
-            );
-          }
-        });
+    if (imgType === "imgRef") {
+      if (imgLink !== "") {
+        setImgUrl(imgLink);
+      } else {
+        setImgUrl(
+          "https://firebasestorage.googleapis.com/v0/b/quarzo-bbf31.appspot.com/o/images%2Fsample-img.webp?alt=media&token=06a7bdcc-6c38-4680-a3c5-1e22a2977c3b"
+        );
       }
-    };
-    getImgUrls();
+    } else if (imgType === "imgRec") {
+      if (imgLink !== "") {
+        setImgUrl(imgLink);
+      } else {
+        setImgUrl(
+          "https://firebasestorage.googleapis.com/v0/b/quarzo-bbf31.appspot.com/o/images%2Fsample-img.webp?alt=media&token=06a7bdcc-6c38-4680-a3c5-1e22a2977c3b"
+        );
+      }
+    }
     // eslint-disable-next-line
   }, []);
   const handleDownloadImg = () => {

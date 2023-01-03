@@ -180,31 +180,95 @@ export const Compras = () => {
           />
 
           <Box display="none">
-            <DownloadTableExcel
-              filename="users table"
-              sheet="users"
-              currentTableRef={tableRef.current}
-            >
-              <button> Export excel </button>
-            </DownloadTableExcel>
-
             <table ref={tableRef}>
+              <thead>
+                <tr>
+                  <td>Autor</td>
+                  <td>Cantidad</td>
+                  <td>ConsultasCompras</td>
+                  <td>Ediciones</td>
+                  <td>EstadoEntrega</td>
+                  <td>EstadoPedido</td>
+                  <td>FechaCreado</td>
+                  <td>FechaDeCompra</td>
+                  <td>FechaRequerido</td>
+                  <td>FechaSolicitado</td>
+                  <td>FechaUltimaModificacion</td>
+                  <td>FormaDePago</td>
+                  <td>ID</td>
+                  <td>ImgRecUrl</td>
+                  <td>ImgRefUrl</td>
+                  <td>LinkMl</td>
+                  <td>LinkRef</td>
+                  <td>MontoFactura</td>
+                  <td>NombreItem</td>
+                  <td>PerteneceAObra</td>
+                  <td>Proveedor</td>
+                  <td>RecibidoEnObra</td>
+                  <td>TomaPedido</td>
+                  <td>UM</td>
+                  <td>UserUltimaModificacion</td>
+                </tr>
+              </thead>
               <tbody>
-                <tr>
-                  <th>Firstname</th>
-                  <th>Lastname</th>
-                  <th>Age</th>
-                </tr>
-                <tr>
-                  <td>Edison</td>
-                  <td>Padilla</td>
-                  <td>20</td>
-                </tr>
-                <tr>
-                  <td>Alberto</td>
-                  <td>Lopez</td>
-                  <td>94</td>
-                </tr>
+                {items &&
+                  items.map(
+                    ({
+                      autor,
+                      cantidad,
+                      consultasCompras,
+                      ediciones,
+                      estadoEntrega,
+                      estadoPedido,
+                      fechaCreado,
+                      fechaDeCompra,
+                      fechaRequerido,
+                      fechaSolicitado,
+                      fechaUltimaModificacion,
+                      formaDePago,
+                      id,
+                      imgRecUrl,
+                      imgRefUrl,
+                      linkMl,
+                      linkRef,
+                      montoFactura,
+                      nombreItem,
+                      perteneceAObra,
+                      proveedor,
+                      recibidoEnObra,
+                      tomaPedido,
+                      um,
+                      userUltimaModificacion,
+                    }) => (
+                      <tr key={id}>
+                        <td>{autor}</td>
+                        <td>{cantidad}</td>
+                        <td>{consultasCompras}</td>
+                        <td>{ediciones}</td>
+                        <td>{estadoEntrega}</td>
+                        <td>{estadoPedido}</td>
+                        <td>{fechaCreado}</td>
+                        <td>{fechaDeCompra}</td>
+                        <td>{fechaRequerido}</td>
+                        <td>{fechaSolicitado}</td>
+                        <td>{fechaUltimaModificacion}</td>
+                        <td>{formaDePago}</td>
+                        <td>{id}</td>
+                        <td>{imgRecUrl}</td>
+                        <td>{imgRefUrl}</td>
+                        <td>{linkMl}</td>
+                        <td>{linkRef}</td>
+                        <td>{montoFactura}</td>
+                        <td>{nombreItem}</td>
+                        <td>{perteneceAObra}</td>
+                        <td>{proveedor}</td>
+                        <td>{recibidoEnObra}</td>
+                        <td>{tomaPedido}</td>
+                        <td>{um}</td>
+                        <td>{userUltimaModificacion}</td>
+                      </tr>
+                    )
+                  )}
               </tbody>
             </table>
           </Box>
@@ -218,6 +282,15 @@ export const Compras = () => {
             pr="15px"
             justifyContent="flex-end"
           >
+            <Button border="1px" fontSize="12px" size="md">
+              <DownloadTableExcel
+                filename="ITEMS"
+                sheet="ITEMS"
+                currentTableRef={tableRef.current}
+              >
+                Exportar Tabla
+              </DownloadTableExcel>
+            </Button>
             <Button border="1px" fontSize="12px" mx="10px" size="md">
               Comprobantes
             </Button>

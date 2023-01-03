@@ -98,6 +98,8 @@ export const addItemToObra = async (item, obra) => {
     await updateDoc(docRef, {
       compras: arrayUnion(item),
     });
+
+    //General
     const generalRef = doc(db, "obras", "XtnjdhaYtZNPBLnL2SL9");
     await updateDoc(generalRef, {
       compras: arrayUnion(item),
@@ -121,6 +123,21 @@ export const editItem = async (obra, newItem) => {
   await updateDoc(docRef, {
     compras: newComprasArray,
   });
+
+  //General
+  const generalRef = doc(db, "obras", "XtnjdhaYtZNPBLnL2SL9");
+  const generalDocument = await getDoc(generalRef);
+  let generalCompras = generalDocument.data().compras;
+  let newGeneralComprasArray = generalCompras.map((item) => {
+    if (item.id === newItem.id) {
+      return newItem;
+    } else {
+      return item;
+    }
+  });
+  await updateDoc(generalRef, {
+    compras: newGeneralComprasArray,
+  });
 };
 
 export const removeItem = async (nombreItem, obra) => {
@@ -134,6 +151,17 @@ export const removeItem = async (nombreItem, obra) => {
     await updateDoc(docRef, {
       compras: newComprasArray,
     });
+
+    //General
+    const generalRef = doc(db, "obras", "XtnjdhaYtZNPBLnL2SL9");
+    const generalDocument = await getDoc(generalRef);
+    let generalCompras = generalDocument.data().compras;
+    let newGeneralComprasArray = generalCompras.filter(
+      (item) => item.nombreItem !== nombreItem
+    );
+    await updateDoc(generalRef, {
+      compras: newGeneralComprasArray,
+    });
   } catch (err) {
     console.log(err);
   }
@@ -141,9 +169,9 @@ export const removeItem = async (nombreItem, obra) => {
 
 // I M A G E N E S
 
-export const uploadReferenceImg = async (obraId, nombreItem, file) => {
+export const uploadReferenceImg = async (obraId, idItem, file) => {
   try {
-    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-ref.jpg`);
+    const imgRef = ref(storage, `images/${obraId}/${idItem}-ref.jpg`);
     const uploadRes = await uploadBytes(imgRef, file);
     console.log(uploadRes);
     return uploadRes;
@@ -152,9 +180,9 @@ export const uploadReferenceImg = async (obraId, nombreItem, file) => {
   }
 };
 
-export const getReferenceImg = async (obraId, nombreItem) => {
+export const getReferenceImg = async (obraId, idItem) => {
   try {
-    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-ref.jpg`);
+    const imgRef = ref(storage, `images/${obraId}/${idItem}-ref.jpg`);
     const url = await getDownloadURL(imgRef);
     return url;
   } catch (err) {
@@ -162,9 +190,9 @@ export const getReferenceImg = async (obraId, nombreItem) => {
   }
 };
 
-export const uploadReceiptImg = async (obraId, nombreItem, file) => {
+export const uploadReceiptImg = async (obraId, idItem, file) => {
   try {
-    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-rec.jpg`);
+    const imgRef = ref(storage, `images/${obraId}/${idItem}-rec.jpg`);
     const uploadRes = await uploadBytes(imgRef, file);
     return uploadRes;
   } catch (err) {
@@ -172,9 +200,9 @@ export const uploadReceiptImg = async (obraId, nombreItem, file) => {
   }
 };
 
-export const getReceiptImg = async (obraId, nombreItem) => {
+export const getReceiptImg = async (obraId, idItem) => {
   try {
-    const imgRef = ref(storage, `images/${obraId}/${nombreItem}-rec.jpg`);
+    const imgRef = ref(storage, `images/${obraId}/${idItem}-rec.jpg`);
     const url = await getDownloadURL(imgRef);
     return url;
   } catch (err) {

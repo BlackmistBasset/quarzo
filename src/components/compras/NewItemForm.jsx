@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -27,11 +27,7 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 
-import {
-  addItemToObra,
-  uploadReceiptImg,
-  uploadReferenceImg,
-} from "../../firebase/firebase";
+import { addItemToObra } from "../../firebase/firebase";
 
 import { parseDate } from "../../utils/utils";
 
@@ -56,20 +52,20 @@ const schema = Yup.object({
 
 export const NewItemForm = ({ user, selectedObra }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let [nombreDelItem, setNombreDelItem] = useState();
+  // let [nombreDelItem, setNombreDelItem] = useState();
   const {
     register,
-    watch,
+    // watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  useEffect(() => {
-    const subscription = watch((value) => setNombreDelItem(value.nombreItem));
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((value) => setNombreDelItem(value.nombreItem));
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
 
   const itemUpload = async (item) => {
     if (item) {
@@ -93,37 +89,30 @@ export const NewItemForm = ({ user, selectedObra }) => {
       parsedItem.userUltimaModificacion = user.firstName;
       parsedItem.ediciones = [];
       parsedItem.perteneceAObra = selectedObra.id;
-
-      console.log("fechaCreado:", parsedItem.fechaCreado);
-      console.log(
-        "fechaUltimaModificacion:",
-        parsedItem.fechaUltimaModificacion
-      );
-      console.log("fechaDeCompra:", parsedItem.fechaDeCompra);
-      console.log("fechaSolicitado:", parsedItem.fechaSolicitado);
-      console.log("fechaRequerido:", parsedItem.fechaRequerido);
+      parsedItem.imgRefUrl = "";
+      parsedItem.imgRecUrl = "";
       await addItemToObra(parsedItem, selectedObra.id);
 
       onClose();
     }
   };
 
-  const handleChangeFile = (e) => {
-    const files = e.target.files;
-    const fileReader = new FileReader();
-    if (fileReader && files && files.length > 0) {
-      fileReader.readAsArrayBuffer(files[0]);
-      fileReader.onload = async () => {
-        const imgData = fileReader.result;
-        if (e.target.name === "img-ref") {
-          await uploadReferenceImg(selectedObra.id, nombreDelItem, imgData);
-        }
-        if (e.target.name === "img-rec") {
-          await uploadReceiptImg(selectedObra.id, nombreDelItem, imgData);
-        }
-      };
-    }
-  };
+  // const handleChangeFile = (e) => {
+  //   const files = e.target.files;
+  //   const fileReader = new FileReader();
+  //   if (fileReader && files && files.length > 0) {
+  //     fileReader.readAsArrayBuffer(files[0]);
+  //     fileReader.onload = async () => {
+  //       const imgData = fileReader.result;
+  //       if (e.target.name === "img-ref") {
+  //         await uploadReferenceImg(selectedObra.id, nombreDelItem, imgData);
+  //       }
+  //       if (e.target.name === "img-rec") {
+  //         await uploadReceiptImg(selectedObra.id, nombreDelItem, imgData);
+  //       }
+  //     };
+  //   }
+  // };
 
   return (
     <>
@@ -325,7 +314,7 @@ export const NewItemForm = ({ user, selectedObra }) => {
                 ></Input>
                 <FormErrorMessage>{errors.linkRef?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl px={1} isInvalid={errors.imgRef}>
+              {/* <FormControl px={1} isInvalid={errors.imgRef}>
                 <FormLabel>Imagen de referencia:</FormLabel>
                 <Input
                   borderColor="gray.500"
@@ -336,8 +325,8 @@ export const NewItemForm = ({ user, selectedObra }) => {
                   mb={1}
                   onChange={handleChangeFile}
                 ></Input>
-                <FormErrorMessage>{errors.imgRef?.message}</FormErrorMessage>
-              </FormControl>
+                <FormErrorMessage>{errors.imgRef?.message}</FormErrorMessage> 
+              </FormControl>*/}
             </Box>
             <Text fontSize="12px" fontWeight="bold">
               PROVEEDOR:
@@ -429,7 +418,7 @@ export const NewItemForm = ({ user, selectedObra }) => {
                 ></Input>
                 <FormErrorMessage>{errors.linkMl?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl px={1} isInvalid={errors.imgComprobante}>
+              {/* <FormControl px={1} isInvalid={errors.imgComprobante}>
                 <FormLabel>Imagen comprobante:</FormLabel>
                 <Input
                   borderColor="gray.500"
@@ -443,7 +432,7 @@ export const NewItemForm = ({ user, selectedObra }) => {
                 <FormErrorMessage>
                   {errors.imgComprobante?.message}
                 </FormErrorMessage>
-              </FormControl>
+              </FormControl> */}
             </Box>
             <Flex justifyContent="flex-end">
               <Button

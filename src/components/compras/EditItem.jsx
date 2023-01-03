@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -29,6 +29,8 @@ import {
   editItem,
   uploadReceiptImg,
   uploadReferenceImg,
+  getReceiptImg,
+  getReferenceImg,
 } from "../../firebase/firebase";
 
 import { parseDate, parseFechaDeCompraEdit } from "../../utils/utils";
@@ -70,25 +72,20 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
     montoFactura,
     formaDePago,
     linkMl,
+    id,
+    perteneceAObra,
   } = selectedItem;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  let [nombreDelItem, setNombreDelItem] = useState();
 
   const {
     register,
     setValue,
-    watch,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    const subscription = watch((value) => setNombreDelItem(value.nombreItem));
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   //Cargar values por default al form
   useEffect(() => {
@@ -136,6 +133,9 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
       parsedItem.fechaUltimaModificacion = parseDate(new Date());
       parsedItem.userUltimaModificacion = user.firstName;
 
+      parsedItem.imgRefUrl = await getReferenceImg(perteneceAObra, id);
+      parsedItem.imgRecUrl = await getReceiptImg(perteneceAObra, id);
+
       await editItem(selectedObra.id, parsedItem);
 
       onClose();
@@ -150,10 +150,10 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
       fileReader.onload = async () => {
         const imgData = fileReader.result;
         if (e.target.name === "img-ref") {
-          await uploadReferenceImg(selectedObra.id, nombreDelItem, imgData);
+          await uploadReferenceImg(selectedObra.id, id, imgData);
         }
         if (e.target.name === "img-rec") {
-          await uploadReceiptImg(selectedObra.id, nombreDelItem, imgData);
+          await uploadReceiptImg(selectedObra.id, id, imgData);
         }
       };
     }
