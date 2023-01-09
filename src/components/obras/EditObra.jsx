@@ -137,13 +137,7 @@ export const EditObra = ({ nombreObra, jefeAsignado, id }) => {
                 >
                   Editar obra
                 </Button>
-                <Button
-                  size="sm"
-                  border="1px"
-                  borderColor="gray.500"
-                  m={1}
-                  onClick={onClose}
-                >
+                <Button size="sm" variant="ghost" m={1} onClick={onClose}>
                   Cancelar
                 </Button>
               </Flex>

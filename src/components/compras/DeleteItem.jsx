@@ -19,7 +19,7 @@ import { removeItem } from "../../firebase/firebase";
 export const DeleteItem = ({ nombreItem, perteneceAObra }) => {
   const handleDeleteItem = async () => {
     await removeItem(nombreItem, perteneceAObra);
-    window.location.reload();
+    onClose();
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -57,13 +57,7 @@ export const DeleteItem = ({ nombreItem, perteneceAObra }) => {
               >
                 Confirmar
               </Button>
-              <Button
-                size="sm"
-                border="1px"
-                borderColor="gray.500"
-                m={1}
-                onClick={onClose}
-              >
+              <Button size="sm" variant="ghost" m={1} onClick={onClose}>
                 Cancelar
               </Button>
             </Box>

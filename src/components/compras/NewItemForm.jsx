@@ -435,13 +435,7 @@ export const NewItemForm = ({ user, selectedObra }) => {
               </FormControl> */}
             </Box>
             <Flex justifyContent="flex-end">
-              <Button
-                type="submit"
-                border="1px"
-                borderColor="gray.500"
-                _hover={{ bg: "blackAlpha.400" }}
-                m={2}
-              >
+              <Button type="submit" border="1px" borderColor="gray.500" m={2}>
                 Aceptar
               </Button>
               <Button onClick={onClose} variant="ghost" size="md" m={2}>

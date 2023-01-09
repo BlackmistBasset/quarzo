@@ -24,13 +24,7 @@ export const DeleteObra = ({ id, nombreObra }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Button
-        size="sm"
-        border="1px"
-        borderColor="gray.500"
-        m={1}
-        onClick={onOpen}
-      >
+      <Button size="sm" m={1} onClick={onOpen} variant="ghost">
         Eliminar Obra
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="md">
@@ -62,13 +56,7 @@ export const DeleteObra = ({ id, nombreObra }) => {
               >
                 Confirmar
               </Button>
-              <Button
-                size="sm"
-                border="1px"
-                borderColor="gray.500"
-                m={1}
-                onClick={onClose}
-              >
+              <Button size="sm" variant="ghost" m={1} onClick={onClose}>
                 Cancelar
               </Button>
             </Box>

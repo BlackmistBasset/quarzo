@@ -65,7 +65,6 @@ export const NewObraForm = () => {
         size="sm"
         border="1px"
         borderColor="gray.500"
-        _hover={{ bg: "blackAlpha.400" }}
         ml="20px"
         fontSize="12px"
         fontWeight="bold"

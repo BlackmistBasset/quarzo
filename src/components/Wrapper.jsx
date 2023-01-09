@@ -6,9 +6,11 @@ import { auth, getObras } from "../firebase/firebase";
 
 import { ObrasModal } from "./obras/ObrasModal";
 import { AdministrarObras } from "./obras/AdministrarObras";
+import { AdministrarCajas } from "./cajaChica/AdministrarCajas";
 
 import { BiExit } from "react-icons/bi";
 import { Center, Box, Text, Flex, Button, Spacer } from "@chakra-ui/react";
+import { VerMovimientos } from "./cajaChica/VerMovimientos";
 
 export const Wrapper = ({ userInfo, children }) => {
   const [obras, setObras] = useState([]);
@@ -40,30 +42,29 @@ export const Wrapper = ({ userInfo, children }) => {
           height="7vh"
         >
           <Text p={2} ml="20px">
-            {userInfo && userInfo.userName}
+            Hola, <b>{userInfo && userInfo.userName}</b>
           </Text>
-          <Text p={2} color="red" ml="20px">
-            Caja: $10000
-          </Text>
-          <Button
-            m={2}
-            size="sm"
-            border="1px"
-            borderColor="gray.500"
-            _hover={{ bg: "blackAlpha.400" }}
-            fontSize="14px"
-            ml="20px"
-          >
-            Ver movimientos
-          </Button>
+          {userInfo.userType && userInfo.userType === "jefeDeObra" ? (
+            <>
+              <Text p={2} color="red" mx="20px">
+                Caja: ${userInfo && userInfo.cajaChica}
+              </Text>
+              <VerMovimientos
+                jefeSeleccionado={userInfo.userName}
+                userType={userInfo.userType}
+                jefeId={userInfo.uid}
+              />
+            </>
+          ) : (
+            ""
+          )}
+          {userInfo && userInfo.userType === "admin" ? (
+            <AdministrarCajas userType={userInfo.userType} />
+          ) : (
+            ""
+          )}
           <Spacer />
-          <Button
-            border="1px"
-            borderRadius="50%"
-            _hover={{ bg: "blackAlpha.400" }}
-            fontSize="14px"
-            size="sm"
-          >
+          <Button border="1px" borderRadius="50%" fontSize="14px" size="sm">
             2
           </Button>
           <Text fontSize="14px" m={2} marginRight="30px">

@@ -261,7 +261,67 @@ export const deleteObra = async (obraId) => {
   await deleteDoc(doc(db, "obras", obraId));
 };
 
+// C A J A   C H I C A
+
+export const getJefesDeObraAndCajas = async () => {
+  const jefesYCajas = [];
+  const querySnapshot = await getDocs(collection(db, "users"));
+  querySnapshot.forEach((doc) => {
+    const resDoc = doc.data();
+    if (resDoc.userType === "jefeDeObra")
+      jefesYCajas.push({
+        jefeDeObra: resDoc.userName,
+        montoCajaChica: resDoc.cajaChica,
+        jefeId: resDoc.uid,
+      });
+  });
+  return jefesYCajas;
+};
+
+export const getOneJefeMovimientos = async (jefe) => {
+  let jefeSeleccionado;
+  const querySnapshot = await getDocs(collection(db, "users"));
+  querySnapshot.forEach((doc) => {
+    const resDoc = doc.data();
+    if (resDoc.userName === jefe) {
+      jefeSeleccionado = resDoc;
+    }
+  });
+  return jefeSeleccionado.movimientos;
+};
+
+export const getOneJefeCaja = async (jefe) => {
+  let jefeSeleccionado;
+  const querySnapshot = await getDocs(collection(db, "users"));
+  querySnapshot.forEach((doc) => {
+    const resDoc = doc.data();
+    if (resDoc.userName === jefe) {
+      jefeSeleccionado = resDoc;
+    }
+  });
+  return jefeSeleccionado.cajaChica;
+};
+
+export const añadirSaldoAJefe = async (jefeId, monto) => {
+  await updateDoc(doc(db, "users", jefeId), {
+    cajaChica: monto,
+  });
+};
+
+export const añadirMovimiento = async (jefeId, movimiento) => {
+  await updateDoc(doc(db, "users", jefeId), {
+    movimientos: arrayUnion(movimiento),
+  });
+};
+
+export const restarMontoCaja = async (jefeId, montoCaja, montoMovimiento) => {
+  await updateDoc(doc(db, "users", jefeId), {
+    cajaChica: montoCaja - montoMovimiento,
+  });
+};
+
 // U T I L I D A D E S
+
 export const getJefesDeObra = async () => {
   const jefes = [];
   const querySnapshot = await getDocs(collection(db, "users"));

@@ -33,7 +33,6 @@ export const ObrasModal = ({ userInfo }) => {
         size="sm"
         border="1px"
         borderColor="gray.500"
-        _hover={{ bg: "blackAlpha.400" }}
         ml="20px"
         onClick={onOpen}
       >

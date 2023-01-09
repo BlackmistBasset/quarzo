@@ -25,8 +25,8 @@ export const AdministrarObras = ({ obras }) => {
         size="sm"
         border="1px"
         borderColor="gray.500"
-        _hover={{ bg: "blackAlpha.400" }}
-        ml="20px"
+        m={2}
+        ml="15px"
         fontSize="12px"
         fontWeight="bold"
         onClick={onOpen}

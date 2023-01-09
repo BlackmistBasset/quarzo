@@ -57,6 +57,7 @@ export const Register = () => {
   const handleRegister = (data) => {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
+        let updatedUser;
         const user = {
           uid: userCredential.user.uid,
           email: data.email,
@@ -66,7 +67,13 @@ export const Register = () => {
           userName: data.firstName[0] + data.lastName,
           currentObra: "",
         };
-        registerNewUser(user);
+        if (user.userType === "jefeDeObra") {
+          updatedUser = { ...user, cajaChica: 0, movimientos: [] };
+        } else {
+          updatedUser = { ...user };
+        }
+        registerNewUser(updatedUser);
+        console.log(updatedUser);
         navigate("/compras");
       })
       .catch((err) => {

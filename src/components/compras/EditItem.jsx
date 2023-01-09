@@ -161,13 +161,7 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
 
   return (
     <>
-      <Button
-        border="1px"
-        borderColor="gray.500"
-        _hover={{ bg: "blackAlpha.400" }}
-        mr={3}
-        onClick={onOpen}
-      >
+      <Button border="1px" borderColor="gray.500" mr={3} onClick={onOpen}>
         Editar Item
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size="2xl">
@@ -486,13 +480,7 @@ export const EditItem = ({ selectedItem, user, selectedObra }) => {
               </FormControl>
             </Box>
             <Flex justifyContent="flex-end">
-              <Button
-                type="submit"
-                border="1px"
-                borderColor="gray.500"
-                _hover={{ bg: "blackAlpha.400" }}
-                m={2}
-              >
+              <Button type="submit" border="1px" borderColor="gray.500" m={2}>
                 Aceptar
               </Button>
               <Button onClick={onClose} variant="ghost" size="md" m={2}>
