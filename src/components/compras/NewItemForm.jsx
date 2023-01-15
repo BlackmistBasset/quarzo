@@ -27,7 +27,7 @@ import {
   ModalCloseButton,
 } from "@chakra-ui/react";
 
-import { addItemToObra } from "../../firebase/firebase";
+import { addItemToObra, crearNotificacion } from "../../firebase/firebase";
 
 import { parseDate } from "../../utils/utils";
 
@@ -92,7 +92,11 @@ export const NewItemForm = ({ user, selectedObra }) => {
       parsedItem.imgRefUrl = "";
       parsedItem.imgRecUrl = "";
       await addItemToObra(parsedItem, selectedObra.id);
-
+      await crearNotificacion(["compras", "jefeDeObra", "admin"], {
+        fechaEmision: new Date().toLocaleDateString(),
+        cuerpoNotificacion: "Hay un nuevo item disponible",
+        leida: false,
+      });
       onClose();
     }
   };

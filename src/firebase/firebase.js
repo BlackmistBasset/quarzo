@@ -320,6 +320,78 @@ export const restarMontoCaja = async (jefeId, montoCaja, montoMovimiento) => {
   });
 };
 
+//N O T I F I C A C I O N E S
+
+export const listenUserNotificacions = async (userId, callback) => {
+  const userRef = doc(db, "users", userId);
+
+  onSnapshot(userRef, (info) => {
+    const userInfo = info.data();
+    callback(userInfo.notificaciones);
+  });
+};
+
+export const crearNotificacion = async (target, notificacion) => {
+  const usersRef = collection(db, "users");
+  const docsRef = await getDocs(usersRef);
+  docsRef.forEach(async (user) => {
+    const userData = user.data();
+    if (target.includes(userData.userType)) {
+      const notificacionesNuevas = [...userData.notificaciones, notificacion];
+
+      await updateDoc(doc(db, "users", userData.uid), {
+        notificaciones: notificacionesNuevas,
+      });
+    }
+  });
+};
+
+export const marcarComoLeida = async (userId, notificacionId) => {
+  const userRef = doc(db, "users", userId);
+  const docRef = await getDoc(userRef);
+  const notificaciones = docRef.data().notificaciones;
+  let notificacionesUpdate = notificaciones.map((noti) => {
+    if (noti.id === notificacionId) {
+      let notiUpdated = { ...noti };
+      notiUpdated.leida = true;
+      return notiUpdated;
+    } else {
+      return noti;
+    }
+  });
+  await updateDoc(userRef, {
+    notificaciones: notificacionesUpdate,
+  });
+};
+
+export const marcarTodasComoLeidas = async (userId) => {
+  const userRef = doc(db, "users", userId);
+  const docRef = await getDoc(userRef);
+  const notificaciones = docRef.data().notificaciones;
+  let notificacionesUpdate = notificaciones.map((noti) => {
+    let notiUpdated = { ...noti };
+    notiUpdated.leida = true;
+    return notiUpdated;
+  });
+  await updateDoc(userRef, {
+    notificaciones: notificacionesUpdate,
+  });
+};
+
+export const borrarNotificacion = async (userId, notificacionId) => {
+  const userRef = doc(db, "users", userId);
+  const docRef = await getDoc(userRef);
+  const notificaciones = docRef.data().notificaciones;
+
+  const notificacionesUpdate = notificaciones.filter(
+    (noti) => noti.id !== notificacionId
+  );
+
+  await updateDoc(userRef, {
+    notificaciones: notificacionesUpdate,
+  });
+};
+
 // U T I L I D A D E S
 
 export const getJefesDeObra = async () => {

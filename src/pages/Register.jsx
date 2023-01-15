@@ -66,6 +66,7 @@ export const Register = () => {
           userType: data.userType,
           userName: data.firstName[0] + data.lastName,
           currentObra: "",
+          notificaciones: [],
         };
         if (user.userType === "jefeDeObra") {
           updatedUser = { ...user, cajaChica: 0, movimientos: [] };

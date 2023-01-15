@@ -11,6 +11,7 @@ import { AdministrarCajas } from "./cajaChica/AdministrarCajas";
 import { BiExit } from "react-icons/bi";
 import { Center, Box, Text, Flex, Button, Spacer } from "@chakra-ui/react";
 import { VerMovimientos } from "./cajaChica/VerMovimientos";
+import { NotificacionesModal } from "./notificaciones/NotificacionesModal";
 
 export const Wrapper = ({ userInfo, children }) => {
   const [obras, setObras] = useState([]);
@@ -64,19 +65,17 @@ export const Wrapper = ({ userInfo, children }) => {
             ""
           )}
           <Spacer />
-          <Button border="1px" borderRadius="50%" fontSize="14px" size="sm">
-            2
-          </Button>
-          <Text fontSize="14px" m={2} marginRight="30px">
+          <Text fontSize="14px" m={2}>
             Notificaciones
           </Text>
+          <NotificacionesModal userId={userInfo.uid} />
           <Button
             variant="unstyled"
             _hover={{ bg: "blackAlpha.400" }}
             display="flex"
             justifyContent="center"
             alignItems="center"
-            marginRight="30px"
+            marginX="30px"
             onClick={handleLogOut}
           >
             <Text fontSize="30px" textAlign="center">
